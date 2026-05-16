@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Carpets Clinic — Specialist Rug Care, Restoration &amp; Installation</title>
+<meta name="description" content="A specialist rug studio where craft heritage meets engineering precision. Expert rug consultation, cleaning, repair, restoration and installation nationwide across the UK." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+/* ================================================================
+   CONTACT FORM SETUP
+   ---------------------------------------------------------------
+   To make the contact form send real emails to info@carpetsclinic.co.uk:
+   1. Sign up free at https://formspree.io
+   2. Create a new form (set it to forward to info@carpetsclinic.co.uk)
+   3. Copy your form endpoint (looks like: https://formspree.io/f/abcdefgh)
+   4. Paste it below, replacing the empty string
+   ================================================================ */
+const FORM_ENDPOINT = 'https://formspree.io/f/xdabqjzo';
+
+const { useState, useEffect, useRef } = React;
+
+/* ================================================================
+   PLACEHOLDER — striped SVG for images not yet provided
+   ================================================================ */
+function Placeholder({ label, palette = 'warm', style, className = '' }) {
+  const palettes = {
+    warm:  { bg: '#e6e9ef', stripe: '#d2d8e2', accent: '#3d5a87' },
+    cream: { bg: '#f1f2f4', stripe: '#e2e4e8', accent: '#3d5a87' },
+    deep:  { bg: '#2d3245', stripe: '#3a4055', accent: '#aebed6' },
+    sage:  { bg: '#d6dadf', stripe: '#c1c6cd', accent: '#3d5a87' },
+    rose:  { bg: '#dcd9e0', stripe: '#c8c4cd', accent: '#3d5a87' },
+    blue:  { bg: '#bfc8d6', stripe: '#aab5c5', accent: '#2d4670' },
+  };
+  const p = palettes[palette] || palettes.warm;
+  const id = 'ph' + Math.random().toString(36).slice(2, 8);
+  return (
+    <div className={`ph-tile ${className}`} style={style}>
+      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern id={id + 's'} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="6" height="6" fill={p.bg}/>
+            <line x1="0" y1="0" x2="0" y2="6" stroke={p.stripe} strokeWidth="2"/>
+          </pattern>
+          <pattern id={id + 'w'} width="14" height="14" patternUnits="userSpaceOnUse">
+            <rect width="14" height="14" fill={p.bg}/>
+            <path d="M0 7L14 7M7 0L7 14" stroke={p.stripe} strokeWidth="0.6" opacity="0.55"/>
+            <circle cx="7" cy="7" r="0.7" fill={p.accent} opacity="0.35"/>
+          </pattern>
+        </defs>
+        <rect width="400" height="300" fill={`url(#${id}s)`}/>
+        <rect width="400" height="300" fill={`url(#${id}w)`} opacity="0.6"/>
+        <rect x="14" y="14" width="372" height="272" fill="none" stroke={p.accent} strokeWidth="0.5" opacity="0.4"/>
+        {label && (
+          <text x="20" y="280" fontFamily="JetBrains Mono, monospace" fontSize="10" letterSpacing="2" fill={p.accent} opacity="0.7" textTransform="uppercase">{label.toUpperCase()}</text>
+        )}
+      </svg>
+    </div>
+  );
+}
+
+/* ================================================================
+   NAV
+   ================================================================ */
+function Nav({ route, setRoute }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const links = [
+    ['home', 'Home'],
+    ['services', 'Services'],
+    ['gallery', 'Gallery'],
+    ['about', 'About'],
+    ['contact', 'Contact'],
+  ];
+
+  const go = (r) => { setRoute(r); setOpen(false); window.scrollTo({ top: 0, behavior: 'instant' }); };
+
+  return (
+    <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
+      <div className="shell nav-inner">
+        <button className="logo" onClick={() => go('home')} aria-label="Carpets Clinic home">
+          <span className="logo-mark"><img src="assets/logo.webp" alt="Carpets Clinic" /></span>
+          <span className="logo-text">
+            <span className="name">Carpets Clinic</span>
+            <span className="sub">Specialist Rug Care · UK</span>
+          </span>
+        </button>
+        <ul className="nav-links">
+          {links.map(([key, label]) => (
+            <li key={key}>
+              <button className={route === key ? 'active' : ''} onClick={() => go(key)}>{label}</button>
+            </li>
+          ))}
+        </ul>
+        <div className="nav-cta">
+          <span className="nav-phone hide-mobile"><span className="dot">●</span>&nbsp; +44 (0)20 8795 5215</span>
+          <button className="btn btn-bronze" onClick={() => go('contact')}>Get a Quote <span className="arrow">→</span></button>
+          <button className="menu-btn" onClick={() => setOpen(o => !o)} aria-label="Menu">{open ? 'Close' : 'Menu'}</button>
+        </div>
+      </div>
+      {open && (
+        <div className="mobile-menu">
+          <div className="shell">
+            {links.map(([key, label]) => (
+              <button key={key} className={`mm-link ${route === key ? 'active' : ''}`} onClick={() => go(key)}>{label}</button>
+            ))}
+            <div className="mm-phone">+44 (0)20 8795 5215</div>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+function Footer({ setRoute }) {
+  const go = (r) => { setRoute(r); window.scrollTo({ top: 0, behavior: 'instant' }); };
+  return (
+    <footer className="footer linen-dark">
+      <div className="shell">
+        <div className="footer-cta">
+          <span className="eyebrow light">Free Quote · Nationwide UK</span>
+          <h2>Bring your rug back to <em>its finest hour</em>.</h2>
+          <p>Whether it's a treasured Persian heirloom or a bespoke installation for a 200-room hotel, we'll handle it with the care it deserves.</p>
+          <div className="btns">
+            <button className="btn btn-bronze" onClick={() => go('contact')}>Get a Free Quote <span className="arrow">→</span></button>
+            <a className="btn btn-ghost" href="tel:+442087955215">Call +44 (0)20 8795 5215</a>
+          </div>
+        </div>
+
+        <div className="footer-mark">Carpets <em>Clinic</em></div>
+
+        <div className="footer-grid">
+          <div className="footer-col">
+            <h5>Studio</h5>
+            <p>Unit B2, 1 Chandos Road<br/>London, NW10 6NF</p>
+            <p style={{marginTop: 12}}>Mon–Fri 8:30–17:30<br/>Sat by appointment</p>
+          </div>
+          <div className="footer-col">
+            <h5>Services</h5>
+            <ul>
+              <li><button onClick={() => go('services')}>Consultation &amp; Design</button></li>
+              <li><button onClick={() => go('services')}>Alteration &amp; Fabrication</button></li>
+              <li><button onClick={() => go('services')}>Planning &amp; Installation</button></li>
+              <li><button onClick={() => go('services')}>Cleaning &amp; Stain Removal</button></li>
+              <li><button onClick={() => go('services')}>Repair &amp; Restoration</button></li>
+              <li><button onClick={() => go('services')}>Aftercare &amp; Maintenance</button></li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h5>Company</h5>
+            <ul>
+              <li><button onClick={() => go('about')}>Our Story</button></li>
+              <li><button onClick={() => go('gallery')}>Portfolio</button></li>
+              <li><button onClick={() => go('contact')}>Contact</button></li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h5>Contact</h5>
+            <ul>
+              <li><a href="tel:+442087955215">+44 (0)20 8795 5215</a></li>
+              <li><a href="mailto:info@carpetsclinic.co.uk">info@carpetsclinic.co.uk</a></li>
+              <li>Nationwide service</li>
+              <li>Insured to £1m</li>
+            </ul>
+            <div className="footer-socials">
+              <a href="https://instagram.com/carpetsclinic" target="_blank" rel="noopener">Instagram</a>
+              <a href="https://facebook.com/carpetsclinic" target="_blank" rel="noopener">Facebook</a>
+              <a href="https://linkedin.com/company/carpetsclinic" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://x.com/carpetsclinic" target="_blank" rel="noopener">X</a>
+              <a href="https://tiktok.com/@carpetsclinic" target="_blank" rel="noopener">TikTok</a>
+            </div>
+            <div className="footer-handle">@carpetsclinic</div>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <span>© 2026 Carpets Clinic Ltd</span>
+          <span>Made with care in London</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ================================================================
+   HOME PAGE
+   ================================================================ */
+const CLIENTS = [
+  { name: "Windsor Castle",         logo: "assets/logos/windsor-castle.png" },
+  { name: "Four Seasons",           logo: "assets/logos/four-seasons.png" },
+  { name: "Nike",                   logo: "assets/logos/nike.png" },
+  { name: "Warner Brothers",        logo: "assets/logos/warner-brothers.png" },
+  { name: "The Rug Company",        logo: "assets/logos/the-rug-company.png" },
+  { name: "Bryan O'Sullivan Studio",logo: "assets/logos/bryan-osullivan.png" },
+  { name: "Christopher Farr",       logo: "assets/logos/christopher-farr.png" },
+  { name: "Floor Story",            logo: "assets/logos/floor-story.png" },
+  { name: "Designed by Woulfe",     logo: "assets/logos/designed-by-woulfe.png" },
+  { name: "Vanderhurd",             logo: "assets/logos/vanderhurd.png" },
+  { name: "Peter Page",             logo: "assets/logos/peter-page.png" },
+];
+
+const HOME_SERVICES = [
+  { n: '01', t: 'Rug Consultation & Design',       p: 'Expert guidance on rug type, construction and materials — every decision informed from the start.',           img: null,                          pal: 'warm' },
+  { n: '02', t: 'Alteration & Fabrication',        p: 'Rug joining, shape alteration and floor-box cut-outs, bespoke fits for any space.',                            img: 'assets/services/alteration.jpg', pal: 'rose' },
+  { n: '03', t: 'Project Planning & Installation', p: 'Flexible scheduling, collection, delivery and final-stage installation, all handled by our own team.',         img: null,                          pal: 'sage' },
+  { n: '04', t: 'Cleaning & Stain Removal',        p: 'Expert cleaning and stain removal, wool-safe and dye-stable.',                                                  img: null,                          pal: 'cream' },
+  { n: '05', t: 'Repair & Restoration',            p: 'Damage repairs, colour correction and pile resurfacing on antique and contemporary pieces.',                   img: 'assets/services/repair.jpg',  pal: 'blue' },
+  { n: '06', t: 'Aftercare & Maintenance',         p: 'In-depth care plans for the longevity of your rug, with optional scheduled checks.',                           img: null,                          pal: 'deep' },
+];
+
+function Home({ setRoute }) {
+  const go = (r) => { setRoute(r); window.scrollTo({ top: 0, behavior: 'instant' }); };
+  return (
+    <main className="fade-in">
+
+      {/* HERO */}
+      <section className="hero">
+        <div className="shell">
+          <div className="hero-meta">
+            <span className="eyebrow">Est. London 2018 · Nationwide UK</span>
+            <span className="line"></span>
+            <span className="eyebrow muted">Carpets Clinic</span>
+          </div>
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <h1 className="display">We help integrate rugs <em>within spaces</em>.</h1>
+              <p className="lede">A specialist rug studio where craft heritage meets engineering precision. We treat every rug with the rigour of a specialist and the care of a craftsman, in homes, offices and hotels nationwide across the UK.</p>
+              <div className="hero-actions">
+                <button className="btn btn-primary" onClick={() => go('contact')}>Get a Free Quote <span className="arrow">→</span></button>
+                <button className="btn btn-ghost" onClick={() => go('services')}>See our services</button>
+              </div>
+            </div>
+            <div className="hero-image">
+              <img src="assets/hero.jpg" alt="Hand-knotted rug being woven on the loom at the Carpets Clinic studio" className="hero-photo" />
+              <div className="hero-corner">
+                <div className="label">From the Studio</div>
+                <div className="value">Hand-knotted on the loom, Carpets Clinic</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TRUST MARQUEE */}
+      <section className="trust-strip">
+        <div className="trust-meta shell">
+          <span className="trust-tag">Founded 2018</span>
+          <span className="dot-sep">·</span>
+          <span className="trust-tag">Nationwide Service</span>
+          <span className="dot-sep">·</span>
+          <span className="trust-tag muted-tag">Trusted by</span>
+        </div>
+        <div className="marquee">
+          <div className="marquee-track">
+            {[0, 1].map(dup => (
+              <div className="marquee-row" key={dup} aria-hidden={dup === 1}>
+                {CLIENTS.map((c, i) => (
+                  <span className="marquee-item" key={i}>
+                    <img src={c.logo} alt={c.name} title={c.name} className="marquee-logo" />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES GRID */}
+      <section className="section">
+        <div className="shell">
+          <div className="section-head">
+            <div>
+              <div className="num">01 What we do</div>
+              <h2 className="h-section">Comprehensive rug solutions, <em>start to finish</em>.</h2>
+            </div>
+            <p className="lede">Six disciplines under one roof, from first consultation through to long-term aftercare.</p>
+          </div>
+          <div className="services-grid">
+            {HOME_SERVICES.map(s => (
+              <div key={s.n} className="service-card" onClick={() => go('services')}>
+                <div className="num">{s.n}</div>
+                <div className="svc-thumb">
+                  {s.img
+                    ? <img src={s.img} alt={s.t} />
+                    : <Placeholder palette={s.pal} style={{height: '100%'}} />
+                  }
+                </div>
+                <h3>{s.t}</h3>
+                <p>{s.p}</p>
+                <span className="more">Learn more <span>→</span></span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SUSTAINABILITY */}
+      <section className="section sustain-section">
+        <div className="shell">
+          <div className="sustain-grid">
+            <div>
+              <div className="num">02 What drives us</div>
+              <h2 className="h-section" style={{marginTop: 0, marginBottom: 28}}>Restoration over <em>replacement</em>.</h2>
+              <p style={{fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22, color: 'var(--bronze-deep)', lineHeight: 1.3, marginTop: 24}}>
+                A rug restored is a story continued.
+              </p>
+            </div>
+            <div>
+              <p style={{fontSize: 19, lineHeight: 1.6, color: 'var(--charcoal-soft)', marginBottom: 24}}>
+                In a world of fast consumption and throwaway culture, Carpets Clinic stands for the opposite. Every rug that comes through the studio is treated as a piece worth keeping, with material science applied to extend its life by decades, not seasons.
+              </p>
+              <p style={{fontSize: 17, lineHeight: 1.6, color: 'var(--ink-60)'}}>
+                Rooted in chemical engineering principles of material analysis and sustainable process thinking, we champion re-use, repair and longevity. Our default recommendation will always be the option that keeps a rug in service for another generation, new life over landfill, every time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PROCESS TIMELINE */}
+      <section className="section">
+        <div className="shell">
+          <div className="section-head" style={{borderTop: '1px solid var(--rule)', paddingTop: 'clamp(40px, 5vw, 72px)'}}>
+            <div>
+              <div className="num">03 How we work</div>
+              <h2 className="h-section">A <em>considered</em> seven-step process.</h2>
+            </div>
+            <p className="lede">From first call to final fit. Every rug is logged, photographed and assessed before any work begins.</p>
+          </div>
+          <div className="timeline">
+            <div className="timeline-line" aria-hidden="true"></div>
+            {[
+              ['01', 'Contact',  'Discuss your needs and what\'s possible.'],
+              ['02', 'Research', 'Brainstorming and preparation.'],
+              ['03', 'Consult',  'Advice on construction and materials.'],
+              ['04', 'Design',   'Mock-up of the final rug specification.'],
+              ['05', 'Check',    'On-site visit to confirm fit and suitability.'],
+              ['06', 'Execute',  'Project execution, in-house or on-site.'],
+              ['07', 'Install',  'Delivery and installation by our team.'],
+            ].map(([n, t, p]) => (
+              <div key={n} className="timeline-step">
+                <div className="timeline-node"><span>{n}</span></div>
+                <h4>{t}</h4>
+                <p>{p}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="cta-banner-light">
+        <div className="shell">
+          <div className="cta-light-inner">
+            <h2 className="cta-light-title">Have a rug that needs attention? <em>Let's talk.</em></h2>
+            <p className="cta-light-sub">Free quotes, written within 48 hours. UK-wide collection and delivery.</p>
+            <div className="cta-light-actions">
+              <button className="btn btn-primary" onClick={() => go('contact')}>Get a Free Quote <span className="arrow">→</span></button>
+              <a className="btn btn-ghost" href="tel:+442087955215">Or call +44 (0)20 8795 5215</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  );
+}
+
+/* ================================================================
+   SERVICES PAGE
+   ================================================================ */
+const SERVICES = [
+  {
+    n: '01', t: 'Rug Consultation & Design',
+    sub: 'Establishing your needs and delivering expert guidance, from the start.',
+    p: 'Carpets Clinic has set out to provide effective solutions when it comes to integrating a rug within a space. Our consultation establishes your needs and delivers expert guidance on rug type, construction and materials, so every decision is informed from the start. We work from concept boards through to final specification, alongside homeowners, designers and architects.',
+    bullets: ['Site visits, sample reviews and design boards', 'Material, weave and pile recommendations', 'Bespoke colour matching and dye-lot management', 'Knot count and weave specification', 'Sourcing from our network of weavers in Central Asia'],
+    img: null, pal: 'warm', tag: 'Studio or on-site',
+  },
+  {
+    n: '02', t: 'Alteration & Fabrication',
+    sub: 'Rug joining, shape alteration, and floor-box cut-outs.',
+    p: 'We provide specialist expertise including rug joining, shape alteration, and floor-box cut-outs. When a beautiful rug is the wrong size or shape for the room, the answer isn\'t to buy another, we re-make it, invisibly, to fit the space exactly.',
+    bullets: ['Trimming and resizing to exact dimensions', 'Invisible joining of two rugs into one', 'Round, oval and bespoke shapes', 'Floor-box and socket cut-outs, precisely bound', 'Hand-bound and hand-stitched edge finishing'],
+    img: 'assets/services/alteration.jpg', pal: 'rose', tag: 'Studio · 1-3 weeks', flip: true,
+  },
+  {
+    n: '03', t: 'Project Planning & Installation',
+    sub: 'Scheduling, collection, delivery and installation, all by our own team.',
+    p: 'We deliver flexible scheduling, fast turnarounds, collection, delivery and final-stage installation, all handled by our own team. For trade clients juggling multiple projects, we sit inside your timeline, not alongside it. Our on-site team carries the workshop with them, so any last-minute adjustment can be made in place.',
+    bullets: ['Project-managed for designers and contractors', 'Insured collection and delivery, UK-wide', 'Photo updates at every milestone', 'On-site trimming for irregular rooms, doorways, fireplaces', 'Quiet out-of-hours and weekend installs'],
+    img: 'assets/services/installation.avif', pal: 'sage', tag: 'On-site · UK-wide',
+  },
+  {
+    n: '04', t: 'Cleaning & Stain Removal',
+    sub: 'Hand-immersion wash for the pieces machines can\'t touch.',
+    p: 'We deliver expert cleaning and stain removal to improve the appearance of rugs and carpets. Our wash is fully manual: pH-balanced shampoos, soft brushes, cold-water rinse, flat-dried over six to twelve days. Wool-safe, dye-stable, returned to its natural lustre.',
+    bullets: ['Specialist Persian, Tabriz, Heriz and Kashan rugs', 'Pet-stain and odour neutralisation', 'Moth treatment and insect-proofing', 'Silk-safe twelve-day cycle for delicate pieces', 'Free collection across UK mainland'],
+    img: null, pal: 'cream', tag: 'Studio · 6-12 days', flip: true,
+  },
+  {
+    n: '05', t: 'Repair & Restoration',
+    sub: 'Damage repairs, colour correction and pile resurfacing.',
+    p: 'Our team completes damage repairs, colour correction, and pile resurfacing on antique and contemporary pieces alike. Our restorers are trained in traditional Persian and Anatolian techniques, matching wool, dye, knot count and tension to the original, so the repair becomes invisible.',
+    bullets: ['Reweaving fields, borders and guard stripes', 'Reknotting damaged pile to single-knot accuracy', 'Selvedge and kilim-end rebuilding', 'Hand-dyed wool matched to existing patina', 'Structural foundation repair on antique pieces'],
+    img: 'assets/services/repair.jpg', pal: 'blue', tag: 'Workshop · 3-16 weeks',
+  },
+  {
+    n: '06', t: 'Aftercare & Maintenance',
+    sub: 'In-depth care plans for the longevity of your rug.',
+    p: 'Our team provides in-depth care plans for the longevity of the rug, with optional scheduled checks. We call back twelve months after installation to see how it\'s wearing, and arrange annual servicing for trade clients managing larger portfolios.',
+    bullets: ['Annual servicing across portfolios', 'Twelve-month aftercare check post-installation', 'On-call advice for spills and accidents', 'Moth and pest monitoring contracts', 'Storage and handling guidance for clients'],
+    img: null, pal: 'deep', tag: 'Ongoing · By plan', flip: true,
+  },
+];
+
+function Services({ setRoute }) {
+  const go = (r) => { setRoute(r); window.scrollTo({ top: 0, behavior: 'instant' }); };
+  return (
+    <main className="fade-in">
+      <section className="pagehead linen">
+        <div className="shell">
+          <div className="label">Services · Comprehensive Rug Solutions</div>
+          <h1>Six disciplines, <em>built around the rug</em>.</h1>
+          <div className="pagehead-meta">
+            <p className="lede">Carpets Clinic has set out to provide effective solutions when it comes to integrating a rug within a space, a hybrid of Central Asian craft heritage and chemical engineering precision.</p>
+            <dl>
+              <div><dt>Service area</dt><dd>UK mainland, nationwide collection</dd></div>
+              <div><dt>Turnaround</dt><dd>1 week to 4 months by service</dd></div>
+            </dl>
+            <dl>
+              <div><dt>Insured to</dt><dd>£1,000,000 in transit &amp; on site</dd></div>
+              <div><dt>Quote</dt><dd>Free, written, within 48 hours</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="shell">
+          {SERVICES.map(s => (
+            <article key={s.n} className={`svc-row ${s.flip ? 'flip' : ''}`}>
+              <div className="svc-text">
+                <div className="num">{s.n} / 06</div>
+                <h2 className="h-section">{s.t}</h2>
+                <p className="lede" style={{fontStyle: 'italic', color: 'var(--charcoal-soft)', marginBottom: 18}}>{s.sub}</p>
+                <p>{s.p}</p>
+                <ul className="svc-list">
+                  {s.bullets.map((b, i) => (
+                    <li key={i}><span className="tick">✦</span><span>{b}</span></li>
+                  ))}
+                </ul>
+                <button className="btn btn-primary" onClick={() => go('contact')}>
+                  Enquire about {s.t.toLowerCase()} <span className="arrow">→</span>
+                </button>
+              </div>
+              <div className="svc-image">
+                {s.img
+                  ? <img src={s.img} alt={s.t} />
+                  : <Placeholder palette={s.pal} style={{width: '100%', height: '100%', position: 'absolute', inset: 0}} />
+                }
+                <div className="tag">{s.tag}</div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}
+
+/* ================================================================
+   GALLERY PAGE
+   ================================================================ */
+function BeforeAfter({ imgBefore, imgAfter, palBefore = 'rose', palAfter = 'warm', label }) {
+  const [split, setSplit] = useState(50);
+  const ref = useRef(null);
+  const dragging = useRef(false);
+
+  const onMove = (clientX) => {
+    if (!ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    setSplit(Math.max(4, Math.min(96, ((clientX - r.left) / r.width) * 100)));
+  };
+
+  return (
+    <div
+      className="beforeafter"
+      style={{ aspectRatio: '4/3', '--split': split + '%' }}
+      ref={ref}
+      onMouseDown={e => { dragging.current = true; onMove(e.clientX); }}
+      onMouseMove={e => { if (dragging.current) onMove(e.clientX); }}
+      onMouseUp={() => { dragging.current = false; }}
+      onMouseLeave={() => { dragging.current = false; }}
+      onTouchStart={e => onMove(e.touches[0].clientX)}
+      onTouchMove={e => { e.preventDefault(); onMove(e.touches[0].clientX); }}
+    >
+      <div className="pane before">
+        {imgBefore ? <img src={imgBefore} alt="Before" /> : <Placeholder palette={palBefore} style={{width:'100%',height:'100%'}}/>}
+      </div>
+      <div className="pane after">
+        {imgAfter ? <img src={imgAfter} alt="After" /> : <Placeholder palette={palAfter} style={{width:'100%',height:'100%'}}/>}
+      </div>
+      <div className="ba-label left">Before</div>
+      <div className="ba-label right">After</div>
+      <div className="handle"></div>
+    </div>
+  );
+}
+
+const TILES = [
+  { id: 1,  kind: 'beforeafter', cat: 'restoration', title: 'Rug Burn Repair',       tag: 'Restoration', desc: 'Full pile restoration on a burn-damaged area — colour matched to original', imgB: 'assets/gallery/burn-repair-before.jpg', imgA: 'assets/gallery/burn-repair-after.jpg' },
+  { id: 2,  kind: 'beforeafter', cat: 'alteration',  title: 'Rug Resizing',           tag: 'Alteration',  desc: 'Reduced 350×250 to 250×200 · Cotswold home, rebound to match original finish', palB: 'rose', palA: 'warm' },
+  { id: 3,  kind: 'tile',        cat: 'alteration',  title: 'Rug Joining',            tag: 'Alteration',  desc: 'Two identical rugs joined seamlessly for a larger living space', pal: 'cream', aspect: '4/3' },
+  { id: 4,  kind: 'tile',        cat: 'fabrication', title: 'Custom Table Cut-Out',   tag: 'Fabrication', desc: 'Precision cut around a fixed table base, bound and installed on-site', pal: 'sage', aspect: '1/1' },
+  { id: 5,  kind: 'tile',        cat: 'alteration',  title: 'Cut & Bind Alteration',  tag: 'Alteration',  desc: 'Two 170×240 rugs cut to 150×200, joined into a seamless 200×300', pal: 'blue', aspect: '4/5' },
+  { id: 6,  kind: 'tile',        cat: 'onsite',      title: 'Onsite Cut-Outs',        tag: 'Onsite',      desc: 'Electric box, floor vent, pillar and box-flap cut-outs', pal: 'deep', aspect: '4/3' },
+  { id: 7,  kind: 'tile',        cat: 'restoration', title: 'Antique Heriz Restoration', tag: 'Restoration', desc: 'Field reweaving and selvedge rebuild · Mayfair residence', pal: 'warm', aspect: '3/4' },
+  { id: 8,  kind: 'tile',        cat: 'cleaning',    title: 'Persian Tabriz Wash',    tag: 'Cleaning',    desc: 'Six-day hand-immersion wash, dye-stable', pal: 'rose', aspect: '1/1' },
+  { id: 9,  kind: 'tile',        cat: 'installation',title: 'Boutique Hotel, Bath',   tag: 'Installation',desc: '32 suites, hand-bound runners, out-of-hours fit', pal: 'blue', aspect: '4/3' },
+  { id: 10, kind: 'tile',        cat: 'consultation',title: 'Designer Specification', tag: 'Consultation',desc: 'Bespoke colourway and weave specification for a Holland Park residence', pal: 'cream', aspect: '3/4' },
+];
+
+const CATS = [
+  ['all', 'All Work'], ['restoration', 'Restoration'], ['alteration', 'Alteration'],
+  ['fabrication', 'Fabrication'], ['onsite', 'Onsite'], ['cleaning', 'Cleaning'],
+  ['installation', 'Installation'], ['consultation', 'Consultation'],
+];
+
+function Gallery() {
+  const [filter, setFilter] = useState('all');
+  const visible = TILES.filter(t => filter === 'all' || t.cat === filter);
+  const counts = Object.fromEntries(CATS.map(([k]) => [k, TILES.filter(t => k === 'all' || t.cat === k).length]));
+
+  return (
+    <main className="fade-in">
+      <section className="pagehead">
+        <div className="shell">
+          <div className="label">Portfolio · 2018–2026</div>
+          <h1>Our work, <em>quietly photographed</em>.</h1>
+          <div className="pagehead-meta">
+            <p className="lede">A selection of recent commissions from antique restorations to hotel-wide installations. Drag the handle on any before/after to see the transformation.</p>
+            <dl>
+              <div><dt>Projects shown</dt><dd>{TILES.length} commissions</dd></div>
+              <div><dt>Date range</dt><dd>2018 – present</dd></div>
+            </dl>
+            <dl>
+              <div><dt>Confidentiality</dt><dd>Some clients omitted by request</dd></div>
+              <div><dt>Photography</dt><dd>By the studio, in-house</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-sm">
+        <div className="shell">
+          <div className="gallery-controls">
+            <span className="label">Filter</span>
+            {CATS.map(([k, l]) => (
+              <button key={k} className={`chip ${filter === k ? 'active' : ''}`} onClick={() => setFilter(k)}>
+                {l} <span className="count">{counts[k]}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="masonry">
+            {visible.map(t => (
+              <figure key={t.id} className="tile">
+                {t.kind === 'beforeafter'
+                  ? <BeforeAfter imgBefore={t.imgB} imgAfter={t.imgA} palBefore={t.palB} palAfter={t.palA} label={t.desc} />
+                  : (
+                    <div style={{aspectRatio: t.aspect, overflow: 'hidden'}}>
+                      <Placeholder palette={t.pal} style={{width:'100%',height:'100%'}} />
+                    </div>
+                  )
+                }
+                <figcaption className="tile-meta">
+                  <div className="row"><h4>{t.title}</h4><span className="tag">{t.tag}</span></div>
+                  <div className="desc">{t.desc}</div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+/* ================================================================
+   ABOUT PAGE
+   ================================================================ */
+function About({ setRoute }) {
+  const go = (r) => { setRoute(r); window.scrollTo({ top: 0, behavior: 'instant' }); };
+  return (
+    <main className="fade-in">
+      <section className="pagehead linen">
+        <div className="shell">
+          <div className="label">About · Who We Are</div>
+          <h1>A hybrid of Central Asian expertise and <em>modern design influences</em>.</h1>
+          <div className="pagehead-meta">
+            <p className="lede">We believe in helping interior designers and homeowners deliver the final touch with confidence. Rugs are often overlooked, so we help simplify the complexities around fibres, dyes, construction and size.</p>
+            <dl>
+              <div><dt>Founded</dt><dd>2018, London</dd></div>
+              <div><dt>Specialism</dt><dd>Rug consultants and craftspeople</dd></div>
+            </dl>
+            <dl>
+              <div><dt>Service area</dt><dd>UK mainland, nationwide</dd></div>
+              <div><dt>Approach</dt><dd>Central Asian craft, modern design</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      {/* FOUNDER STORY */}
+      <section className="section">
+        <div className="shell">
+          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(40px, 6vw, 96px)', alignItems:'start'}} className="about-grid">
+            <Placeholder palette="warm" style={{width:'100%', aspectRatio:'4/5'}} label="Founder · Carpets Clinic" />
+            <div>
+              <div style={{fontFamily:'var(--mono)', fontSize:12, letterSpacing:'0.2em', color:'var(--bronze-deep)', marginBottom:18}}>Founder's story</div>
+              <h2 className="h-section" style={{marginBottom:28}}>Two worlds, <em>one workshop</em>.</h2>
+              <p style={{fontSize:17, color:'var(--ink-60)', lineHeight:1.6, marginBottom:18}}>
+                Our founder is a chemical engineer by training and Afghan-Uzbek by heritage. Two worlds that shape everything about how this business operates.
+              </p>
+              <p style={{fontSize:17, color:'var(--ink-60)', lineHeight:1.6, marginBottom:18}}>
+                Central Asian rug culture is built on precision, patience and generational craft. Chemical engineering brings systematic thinking, material science and a passion for problem-solving. Together they create a business that treats every rug with the rigour of a specialist and the care of a craftsman.
+              </p>
+              <p style={{fontSize:17, color:'var(--ink-60)', lineHeight:1.6, marginBottom:18}}>
+                Rugs are often overlooked, so we help simplify the complexities around fibres, dyes, construction and size. We come in and provide solutions suited to homes and offices, big and small.
+              </p>
+              <p style={{fontSize:17, lineHeight:1.6, fontFamily:'var(--serif)', fontStyle:'italic', color:'var(--charcoal)'}}>
+                We help integrate rugs within spaces.
+              </p>
+            </div>
+          </div>
+          <style>{`@media (max-width: 800px) { .about-grid { grid-template-columns: 1fr !important; } }`}</style>
+        </div>
+      </section>
+
+      {/* STATS */}
+      <section className="section linen-paper">
+        <div className="shell">
+          <div className="section-head">
+            <div>
+              <div className="num">By the numbers</div>
+              <h2 className="h-section">A quiet record, <em>kept honestly</em>.</h2>
+            </div>
+            <p className="lede">We're not the largest. We don't intend to be. These are the figures that matter most to us.</p>
+          </div>
+          <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:0}} className="stats-grid">
+            {[
+              ['2018', 'Founded in London', 'Hybrid studio, designer-led'],
+              ['6', 'Service disciplines', 'From consultation to aftercare'],
+              ['UK', 'Nationwide coverage', 'Collection, delivery, on-site'],
+              ['£1m', 'Insurance cover', 'In transit & on site'],
+            ].map(([n, l, sub], i) => (
+              <div key={i} className="about-stat" style={{padding:'32px 24px 32px 0', borderRight:'1px solid var(--rule-soft)'}}>
+                <div className="num"><em>{n}</em></div>
+                <div className="lbl">{l}</div>
+                <div style={{fontSize:13, color:'var(--ink-60)', marginTop:6}}>{sub}</div>
+              </div>
+            ))}
+          </div>
+          <style>{`@media (max-width: 880px) { .stats-grid { grid-template-columns: 1fr 1fr !important; } } @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr !important; } }`}</style>
+        </div>
+      </section>
+
+      {/* PRINCIPLES */}
+      <section className="section">
+        <div className="shell">
+          <div className="section-head">
+            <div>
+              <div className="num">What we believe</div>
+              <h2 className="h-section">Four principles, <em>in plain English</em>.</h2>
+            </div>
+            <p className="lede">We don't have a manifesto. We do have four rules we've never broken.</p>
+          </div>
+          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(32px, 4vw, 56px)'}} className="principles-grid">
+            {[
+              ['i.',   'Restoration over replacement.', 'In a world of fast consumption and throwaway culture, we stand for the opposite. New life over landfill. A rug restored is a story continued.'],
+              ['ii.',  'Solutions, not products.',      'Rugs are often overlooked. We come in and provide solutions suited to homes and offices, big and small, rather than pushing whatever is on the shelf.'],
+              ['iii.', 'Honest quotes, in writing.',   'If a piece isn\'t worth saving, we\'ll tell you. If a job grows mid-project, we stop and call. No surprises on invoice.'],
+              ['iv.',  'A hybrid practice.',            'Central Asian craft heritage where it matters, chemical engineering precision where it matters. The work sits in the middle and tries to be quiet about both.'],
+            ].map(([n, t, p]) => (
+              <div key={n} style={{borderTop:'1px solid var(--rule-soft)', paddingTop:28}}>
+                <div style={{fontFamily:'var(--serif)', fontStyle:'italic', fontSize:36, color:'var(--bronze)', marginBottom:14, lineHeight:1}}>{n}</div>
+                <h4 style={{fontFamily:'var(--serif)', fontSize:26, marginBottom:12, lineHeight:1.15}}>{t}</h4>
+                <p style={{color:'var(--ink-60)', fontSize:15.5}}>{p}</p>
+              </div>
+            ))}
+          </div>
+          <style>{`@media (max-width: 720px) { .principles-grid { grid-template-columns: 1fr !important; } }`}</style>
+        </div>
+      </section>
+
+      {/* CLIENTS */}
+      <section className="section linen">
+        <div className="shell">
+          <div className="section-head">
+            <div>
+              <div className="num">Selected clients</div>
+              <h2 className="h-section">In good <em>company</em>.</h2>
+            </div>
+            <p className="lede">A discreet selection of the residences, hotels, designers and houses we've worked alongside. Many more prefer not to be named.</p>
+          </div>
+
+          <div className="clients-headline">
+            {['Windsor Castle', 'Kensington Palace Gardens', 'Four Seasons', 'Christie\'s', 'Nike', 'Warner Brothers', 'Omaze'].map((c, i) => (
+              <div key={i} className="client-headline-cell">{c}</div>
+            ))}
+          </div>
+
+          <div style={{paddingTop:8}}>
+            <div style={{fontFamily:'var(--mono)', fontSize:12, letterSpacing:'0.2em', color:'var(--ink-40)', marginBottom:18}}>Studios &amp; houses</div>
+            <div className="clients-grid-2">
+              {['Bryan O\'Sullivan Studio', 'Designed by Woulfe', 'P Joseph', 'STUDIO M.H.D', 'Vanderhurd', 'Christopher Farr', 'The Rug Company', 'FLOOR_STORY', 'Peter Page', 'Dunhill &amp; Lisney'].map((c, i) => (
+                <div key={i} className="client-cell" dangerouslySetInnerHTML={{__html: c}} />
+              ))}
+            </div>
+          </div>
+
+          <p style={{marginTop:32, fontSize:13, color:'var(--ink-60)', fontFamily:'var(--mono)', letterSpacing:'0.08em', textTransform:'uppercase'}}>
+            Display here is by permission.
+          </p>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+/* ================================================================
+   CONTACT PAGE
+   ================================================================ */
+const SERVICES_LIST = [
+  'Rug Consultation & Design',
+  'Alteration & Fabrication',
+  'Project Planning & Installation',
+  'Cleaning & Stain Removal',
+  'Repair & Restoration',
+  'Aftercare & Maintenance',
+  'Trade Programme',
+  'Not sure, please advise',
+];
+
+function Contact() {
+  const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', phone: '', services: [], postcode: '', message: '' });
+  const [files, setFiles] = useState([]);
+  const [dragOver, setDragOver] = useState(false);
+  const [error, setError] = useState('');
+  const fileInputRef = useRef(null);
+
+  const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
+  const toggleService = (s) => setForm(f => ({
+    ...f,
+    services: f.services.includes(s) ? f.services.filter(x => x !== s) : [...f.services, s],
+  }));
+  const addFiles = (newFiles) => {
+    const arr = Array.from(newFiles).filter(f => f.type.startsWith('image/'));
+    setFiles(prev => [...prev, ...arr.map(f => ({
+      file: f, name: f.name,
+      size: (f.size / 1024 / 1024).toFixed(2),
+      url: URL.createObjectURL(f),
+    }))].slice(0, 12));
+  };
+  const removeFile = (i) => setFiles(prev => prev.filter((_, idx) => idx !== i));
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!FORM_ENDPOINT) {
+      // Demo mode — no backend configured yet
+      setSubmitted(true);
+      window.scrollTo({ top: 200, behavior: 'smooth' });
+      return;
+    }
+
+    setSending(true);
+    try {
+      const data = new FormData();
+      data.append('name', form.name);
+      data.append('email', form.email);
+      data.append('phone', form.phone);
+      data.append('postcode', form.postcode);
+      data.append('services', form.services.join(', ') || 'Not specified');
+      data.append('message', form.message);
+      files.forEach((f, i) => data.append(`photo_${i + 1}`, f.file, f.name));
+
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: data,
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+        window.scrollTo({ top: 200, behavior: 'smooth' });
+      } else {
+        setError('Something went wrong. Please email us directly at info@carpetsclinic.co.uk');
+      }
+    } catch {
+      setError('Could not send — please email info@carpetsclinic.co.uk directly.');
+    }
+    setSending(false);
+  };
+
+  const reset = () => { setSubmitted(false); setForm({ name:'', email:'', phone:'', services:[], postcode:'', message:'' }); setFiles([]); setError(''); };
+
+  return (
+    <main className="fade-in">
+      <section className="pagehead">
+        <div className="shell">
+          <div className="label">Contact · Free Quotes Within 48 Hours</div>
+          <h1>Tell us about your rug. <em>We'll do the rest.</em></h1>
+          <div className="pagehead-meta">
+            <p className="lede">The fastest way to a quote is a few photographs and a short note. Send those over and we'll come back within 48 hours with a written estimate, no pressure, no obligation.</p>
+            <dl>
+              <div><dt>Phone</dt><dd style={{fontSize:17, fontFamily:'var(--serif)', fontWeight:500}}>+44 (0)20 8795 5215</dd></div>
+              <div><dt>Email</dt><dd>info@carpetsclinic.co.uk</dd></div>
+            </dl>
+            <dl>
+              <div><dt>Coverage</dt><dd>UK mainland · nationwide collection</dd></div>
+              <div><dt>Response</dt><dd>Within 48 hours, Mon–Fri</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-sm">
+        <div className="shell">
+          <div className="contact-grid">
+            <div>
+              {submitted ? (
+                <div className="success">
+                  <div className="check">✓</div>
+                  <h3 className="h-card" style={{marginBottom:12}}>Thank you, {form.name || 'there'}.</h3>
+                  <p style={{color:'var(--ink-60)', maxWidth:'40ch', margin:'0 auto 8px'}}>
+                    We've received your enquiry
+                    {form.services.length > 0 && <> about <em style={{color:'var(--bronze-deep)'}}>{form.services.join(', ').toLowerCase()}</em></>}
+                    {files.length > 0 && <> along with {files.length} {files.length === 1 ? 'image' : 'images'}</>}
+                    {' '}and will be in touch within 48 hours.
+                  </p>
+                  {!FORM_ENDPOINT && (
+                    <p style={{fontSize:12, color:'var(--ink-40)', fontFamily:'var(--mono)', marginTop:12}}>
+                      Note: form backend not yet connected — see index.html setup instructions.
+                    </p>
+                  )}
+                  <button className="btn btn-ghost" style={{marginTop:32}} onClick={reset}>Send another enquiry</button>
+                </div>
+              ) : (
+                <form className="form" onSubmit={onSubmit}>
+                  <div className="field col-2">
+                    <label>01 Your name</label>
+                    <input required value={form.name} onChange={set('name')} placeholder="Your full name" />
+                  </div>
+                  <div className="field col-1-l">
+                    <label>02 Email</label>
+                    <input required type="email" value={form.email} onChange={set('email')} placeholder="you@studio.co.uk" />
+                  </div>
+                  <div className="field col-1-r">
+                    <label>03 Phone</label>
+                    <input value={form.phone} onChange={set('phone')} placeholder="07000 000 000" />
+                  </div>
+                  <div className="field col-2">
+                    <label>04 Services needed <span className="label-hint">select all that apply</span></label>
+                    <div className="service-checkboxes">
+                      {SERVICES_LIST.map(s => (
+                        <label key={s} className={`service-check ${form.services.includes(s) ? 'is-checked' : ''}`}>
+                          <input type="checkbox" checked={form.services.includes(s)} onChange={() => toggleService(s)} />
+                          <span className="check-box"><span className="check-tick">✓</span></span>
+                          <span>{s}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="field col-2">
+                    <label>05 Postcode</label>
+                    <input value={form.postcode} onChange={set('postcode')} placeholder="W1S 1AA" style={{maxWidth:240}} />
+                  </div>
+                  <div className="field col-2">
+                    <label>06 Tell us about your rug</label>
+                    <textarea required value={form.message} onChange={set('message')} placeholder="Approximate size, age if known, what's happened to it, and the rough timescale you're thinking." />
+                  </div>
+                  <div className="field col-2">
+                    <label>07 Photographs <span className="label-hint">optional, helps us quote faster</span></label>
+                    <div
+                      className={`file-drop ${dragOver ? 'is-dragover' : ''}`}
+                      onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+                      onDragLeave={() => setDragOver(false)}
+                      onDrop={e => { e.preventDefault(); setDragOver(false); addFiles(e.dataTransfer.files); }}
+                      onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                    >
+                      <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={e => addFiles(e.target.files)} style={{display:'none'}} />
+                      <div className="file-drop-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                          <path d="M12 16V4M12 4L6 10M12 4L18 10"/>
+                          <path d="M3 16v3a2 2 0 002 2h14a2 2 0 002-2v-3"/>
+                        </svg>
+                      </div>
+                      <div className="file-drop-text">
+                        <strong>Drop photographs here</strong>
+                        <span>or click to browse · up to 12 images</span>
+                      </div>
+                    </div>
+                    {files.length > 0 && (
+                      <div className="file-grid">
+                        {files.map((f, i) => (
+                          <div key={i} className="file-thumb">
+                            <img src={f.url} alt={f.name} />
+                            <button type="button" className="file-remove" onClick={e => { e.stopPropagation(); removeFile(i); }} aria-label="Remove">×</button>
+                            <div className="file-meta">
+                              <span className="file-name">{f.name}</span>
+                              <span className="file-size">{f.size} MB</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {error && <div className="field col-2" style={{color:'#c0392b', fontSize:14, paddingTop:8}}>{error}</div>}
+                  <div className="field col-2" style={{borderBottom:0, paddingTop:28, display:'flex', alignItems:'center', flexWrap:'wrap', gap:20}}>
+                    <button type="submit" className="btn btn-primary" disabled={sending}>
+                      {sending ? 'Sending…' : 'Request a Free Quote'} <span className="arrow">→</span>
+                    </button>
+                    <span style={{fontFamily:'var(--mono)', fontSize:11, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--ink-40)'}}>
+                      Sent to info@carpetsclinic.co.uk · Reply within 48 hours
+                    </span>
+                  </div>
+                </form>
+              )}
+            </div>
+
+            <aside className="contact-info">
+              <img src="assets/studio.jpg" alt="Carpets Clinic studio, Park Royal, London NW10" className="contact-studio" />
+              <div className="contact-block">
+                <div className="label">Call</div>
+                <div className="value"><a href="tel:+442087955215">+44 (0)20 8795 5215</a></div>
+                <div style={{fontSize:13, color:'var(--ink-60)', marginTop:6, fontFamily:'var(--mono)', letterSpacing:'0.05em'}}>Mon–Fri 8:30–17:30</div>
+              </div>
+              <div className="contact-block">
+                <div className="label">Email</div>
+                <div className="value small"><a href="mailto:info@carpetsclinic.co.uk">info@carpetsclinic.co.uk</a></div>
+              </div>
+              <div className="contact-block">
+                <div className="label">Instagram</div>
+                <div className="value small"><a href="https://instagram.com/carpetsclinic" target="_blank" rel="noopener">@carpetsclinic</a></div>
+              </div>
+              <div className="contact-block">
+                <div className="label">Visit the studio</div>
+                <div className="value small">Unit B2, 1 Chandos Road<br/>London, NW10 6NF</div>
+                <div style={{fontSize:13, color:'var(--ink-60)', marginTop:8, fontStyle:'italic', fontFamily:'var(--serif)'}}>
+                  By appointment only — we work better when we're expecting you.
+                </div>
+              </div>
+              <div className="contact-block">
+                <div className="label">Nationwide service</div>
+                <div style={{fontSize:14, color:'var(--charcoal-soft)', lineHeight:1.55}}>
+                  Insured collection &amp; delivery anywhere on the UK mainland. Onsite work routinely undertaken in London, Bath, Manchester, Edinburgh, Cotswolds &amp; the Home Counties.
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+/* ================================================================
+   APP — ROUTER
+   ================================================================ */
+const ROUTES = ['home', 'services', 'gallery', 'about', 'contact'];
+
+function App() {
+  const initial = ((window.location.hash || '').replace('#', ''));
+  const [route, setRouteRaw] = useState(ROUTES.includes(initial) ? initial : 'home');
+
+  const setRoute = (r) => {
+    setRouteRaw(r);
+    window.location.hash = r;
+  };
+
+  useEffect(() => {
+    const onHash = () => {
+      const h = (window.location.hash || '').replace('#', '');
+      if (ROUTES.includes(h)) setRouteRaw(h);
+    };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  const pages = { home: Home, services: Services, gallery: Gallery, about: About, contact: Contact };
+  const Page = pages[route] || Home;
+
+  return (
+    <div>
+      <Nav route={route} setRoute={setRoute} />
+      <Page key={route} setRoute={setRoute} />
+      <Footer setRoute={setRoute} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
