@@ -332,7 +332,7 @@ function Home({ setRoute }) {
                 In a world of fast consumption and throwaway culture, Carpets Clinic stands for the opposite. Every rug that comes through the studio is treated as a piece worth keeping, with material science applied to extend its life by decades, not seasons.
               </p>
               <p style={{fontSize: 17, lineHeight: 1.6, color: 'var(--ink-60)'}}>
-                Rooted in chemical engineering principles of material analysis and sustainable process thinking, we champion re-use, repair and longevity. Our default recommendation will always be the option that keeps a rug in service for another generation, new life over landfill, every time.
+                Rooted in engineering principles of material analysis and sustainable process thinking, we champion re-use, repair and longevity. Our default recommendation will always be the option that keeps a rug in service for another generation, new life over landfill, every time.
               </p>
             </div>
           </div>
@@ -445,7 +445,7 @@ function Services({ setRoute }) {
           <div className="label">Services · Comprehensive Rug Solutions</div>
           <h1>Six disciplines, <em>built around the rug</em>.</h1>
           <div className="pagehead-meta">
-            <p className="lede">Carpets Clinic has set out to provide effective solutions when it comes to integrating a rug within a space, a hybrid of Central Asian craft heritage and chemical engineering precision.</p>
+            <p className="lede">Carpets Clinic has set out to provide effective solutions when it comes to integrating a rug within a space, a hybrid of Central Asian craft heritage and engineering precision.</p>
             <dl>
               <div><dt>Service area</dt><dd>UK mainland, nationwide collection</dd></div>
               <div><dt>Turnaround</dt><dd>1 week to 4 months by service</dd></div>
@@ -643,7 +643,7 @@ function About({ setRoute }) {
               <div style={{fontFamily:'var(--mono)', fontSize:12, letterSpacing:'0.2em', color:'var(--bronze-deep)', marginBottom:18}}>Founder's story</div>
               <h2 className="h-section" style={{marginBottom:28}}>Two worlds, <em>one workshop</em>.</h2>
               <p style={{fontSize:17, color:'var(--ink-60)', lineHeight:1.6, marginBottom:18}}>
-                Our founder is a chemical engineer by training and Afghan-Uzbek by heritage. Two worlds that shape everything about how this business operates.
+                Our founder is an engineer by training and Afghan-Uzbek by heritage. Two worlds that shape everything about how this business operates.
               </p>
               <p style={{fontSize:17, color:'var(--ink-60)', lineHeight:1.6, marginBottom:18}}>
                 Central Asian rug culture is built on precision, patience and generational craft. Chemical engineering brings systematic thinking, material science and a passion for problem-solving. Together they create a business that treats every rug with the rigour of a specialist and the care of a craftsman.
@@ -703,7 +703,7 @@ function About({ setRoute }) {
               ['i.',   'Restoration over replacement.', 'In a world of fast consumption and throwaway culture, we stand for the opposite. New life over landfill. A rug restored is a story continued.'],
               ['ii.',  'Solutions, not products.',      'Rugs are often overlooked. We come in and provide solutions suited to homes and offices, big and small, rather than pushing whatever is on the shelf.'],
               ['iii.', 'Honest quotes, in writing.',   'If a piece isn\'t worth saving, we\'ll tell you. If a job grows mid-project, we stop and call. No surprises on invoice.'],
-              ['iv.',  'A hybrid practice.',            'Central Asian craft heritage where it matters, chemical engineering precision where it matters. The work sits in the middle and tries to be quiet about both.'],
+              ['iv.',  'A hybrid practice.',            'Central Asian craft heritage where it matters, engineering precision where it matters. The work sits in the middle and tries to be quiet about both.'],
             ].map(([n, t, p]) => (
               <div key={n} style={{borderTop:'1px solid var(--rule-soft)', paddingTop:28}}>
                 <div style={{fontFamily:'var(--serif)', fontStyle:'italic', fontSize:36, color:'var(--bronze)', marginBottom:14, lineHeight:1}}>{n}</div>
@@ -769,25 +769,13 @@ function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', phone: '', services: [], postcode: '', message: '' });
-  const [files, setFiles] = useState([]);
-  const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState('');
-  const fileInputRef = useRef(null);
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
   const toggleService = (s) => setForm(f => ({
     ...f,
     services: f.services.includes(s) ? f.services.filter(x => x !== s) : [...f.services, s],
   }));
-  const addFiles = (newFiles) => {
-    const arr = Array.from(newFiles).filter(f => f.type.startsWith('image/'));
-    setFiles(prev => [...prev, ...arr.map(f => ({
-      file: f, name: f.name,
-      size: (f.size / 1024 / 1024).toFixed(2),
-      url: URL.createObjectURL(f),
-    }))].slice(0, 12));
-  };
-  const removeFile = (i) => setFiles(prev => prev.filter((_, idx) => idx !== i));
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -810,7 +798,6 @@ function Contact() {
       data.append('postcode', form.postcode);
       data.append('services', form.services.join(', ') || 'Not specified');
       data.append('message', form.message);
-      files.forEach((f, i) => data.append(`photo_${i + 1}`, f.file, f.name));
 
       const res = await fetch(FORM_ENDPOINT, {
         method: 'POST',
@@ -863,7 +850,6 @@ function Contact() {
                   <p style={{color:'var(--ink-60)', maxWidth:'40ch', margin:'0 auto 8px'}}>
                     We've received your enquiry
                     {form.services.length > 0 && <> about <em style={{color:'var(--bronze-deep)'}}>{form.services.join(', ').toLowerCase()}</em></>}
-                    {files.length > 0 && <> along with {files.length} {files.length === 1 ? 'image' : 'images'}</>}
                     {' '}and will be in touch within 48 hours.
                   </p>
                   {!FORM_ENDPOINT && (
@@ -909,39 +895,9 @@ function Contact() {
                   </div>
                   <div className="field col-2">
                     <label>07 Photographs <span className="label-hint">optional, helps us quote faster</span></label>
-                    <div
-                      className={`file-drop ${dragOver ? 'is-dragover' : ''}`}
-                      onDragOver={e => { e.preventDefault(); setDragOver(true); }}
-                      onDragLeave={() => setDragOver(false)}
-                      onDrop={e => { e.preventDefault(); setDragOver(false); addFiles(e.dataTransfer.files); }}
-                      onClick={() => fileInputRef.current && fileInputRef.current.click()}
-                    >
-                      <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={e => addFiles(e.target.files)} style={{display:'none'}} />
-                      <div className="file-drop-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-                          <path d="M12 16V4M12 4L6 10M12 4L18 10"/>
-                          <path d="M3 16v3a2 2 0 002 2h14a2 2 0 002-2v-3"/>
-                        </svg>
-                      </div>
-                      <div className="file-drop-text">
-                        <strong>Drop photographs here</strong>
-                        <span>or click to browse · up to 12 images</span>
-                      </div>
-                    </div>
-                    {files.length > 0 && (
-                      <div className="file-grid">
-                        {files.map((f, i) => (
-                          <div key={i} className="file-thumb">
-                            <img src={f.url} alt={f.name} />
-                            <button type="button" className="file-remove" onClick={e => { e.stopPropagation(); removeFile(i); }} aria-label="Remove">×</button>
-                            <div className="file-meta">
-                              <span className="file-name">{f.name}</span>
-                              <span className="file-size">{f.size} MB</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <p style={{fontSize:14, color:'var(--ink-60)', lineHeight:1.6, margin:0, fontFamily:'var(--mono)', letterSpacing:'0.04em'}}>
+                      Once we receive your enquiry, reply to our email with any photographs of your rug — we'll use them to prepare your quote.
+                    </p>
                   </div>
                   {error && <div className="field col-2" style={{color:'#c0392b', fontSize:14, paddingTop:8}}>{error}</div>}
                   <div className="field col-2" style={{borderBottom:0, paddingTop:28, display:'flex', alignItems:'center', flexWrap:'wrap', gap:20}}>
