@@ -893,12 +893,6 @@ function Contact() {
                     <label>06 Tell us about your rug</label>
                     <textarea required value={form.message} onChange={set('message')} placeholder="Approximate size, age if known, what's happened to it, and the rough timescale you're thinking." />
                   </div>
-                  <div className="field col-2">
-                    <label>07 Photographs <span className="label-hint">optional, helps us quote faster</span></label>
-                    <p style={{fontSize:14, color:'var(--ink-60)', lineHeight:1.6, margin:0, fontFamily:'var(--mono)', letterSpacing:'0.04em'}}>
-                      Once we receive your enquiry, reply to our email with any photographs of your rug — we'll use them to prepare your quote.
-                    </p>
-                  </div>
                   {error && <div className="field col-2" style={{color:'#c0392b', fontSize:14, paddingTop:8}}>{error}</div>}
                   <div className="field col-2" style={{borderBottom:0, paddingTop:28, display:'flex', alignItems:'center', flexWrap:'wrap', gap:20}}>
                     <button type="submit" className="btn btn-primary" disabled={sending}>
