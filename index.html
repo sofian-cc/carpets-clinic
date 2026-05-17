@@ -494,7 +494,29 @@ function Services({ setRoute }) {
 /* ================================================================
    GALLERY PAGE
    ================================================================ */
-function BeforeAfter({ imgBefore, imgAfter, palBefore = 'rose', palAfter = 'warm', label }) {
+function Lightbox({ imgs, startIndex, onClose }) {
+  const [idx, setIdx] = useState(startIndex);
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') setIdx(i => (i + 1) % imgs.length);
+      if (e.key === 'ArrowLeft') setIdx(i => (i - 1 + imgs.length) % imgs.length);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [imgs.length, onClose]);
+  return (
+    <div className="lightbox-overlay" onClick={onClose}>
+      <button className="lightbox-close" onClick={onClose}>×</button>
+      {imgs.length > 1 && <button className="lightbox-prev" onClick={e => { e.stopPropagation(); setIdx(i => (i - 1 + imgs.length) % imgs.length); }}>‹</button>}
+      <img src={imgs[idx]} alt="" className="lightbox-img" onClick={e => e.stopPropagation()} />
+      {imgs.length > 1 && <button className="lightbox-next" onClick={e => { e.stopPropagation(); setIdx(i => (i + 1) % imgs.length); }}>›</button>}
+      {imgs.length > 1 && <div className="lightbox-count">{idx + 1} / {imgs.length}</div>}
+    </div>
+  );
+}
+
+function BeforeAfter({ imgBefore, imgAfter, palBefore = 'rose', palAfter = 'warm', label, aspect = '4/3' }) {
   const [split, setSplit] = useState(50);
   const ref = useRef(null);
   const dragging = useRef(false);
@@ -508,7 +530,7 @@ function BeforeAfter({ imgBefore, imgAfter, palBefore = 'rose', palAfter = 'warm
   return (
     <div
       className="beforeafter"
-      style={{ aspectRatio: '4/3', '--split': split + '%' }}
+      style={{ aspectRatio: aspect, '--split': split + '%' }}
       ref={ref}
       onMouseDown={e => { dragging.current = true; onMove(e.clientX); }}
       onMouseMove={e => { if (dragging.current) onMove(e.clientX); }}
@@ -531,16 +553,15 @@ function BeforeAfter({ imgBefore, imgAfter, palBefore = 'rose', palAfter = 'warm
 }
 
 const TILES = [
-  { id: 1,  kind: 'beforeafter', cat: 'restoration', title: 'Rug Burn Repair',       tag: 'Restoration', desc: 'Full pile restoration on a burn-damaged area — colour matched to original', imgB: 'assets/gallery/burn-repair-before.jpg', imgA: 'assets/gallery/burn-repair-after.jpg' },
-  { id: 2,  kind: 'beforeafter', cat: 'alteration',  title: 'Rug Resizing',           tag: 'Alteration',  desc: 'Reduced 350×250 to 250×200 · Cotswold home, rebound to match original finish', palB: 'rose', palA: 'warm' },
-  { id: 3,  kind: 'tile',        cat: 'alteration',  title: 'Rug Joining',            tag: 'Alteration',  desc: 'Two identical rugs joined seamlessly for a larger living space', pal: 'cream', aspect: '4/3' },
-  { id: 4,  kind: 'tile',        cat: 'fabrication', title: 'Custom Table Cut-Out',   tag: 'Fabrication', desc: 'Precision cut around a fixed table base, bound and installed on-site', pal: 'sage', aspect: '1/1' },
-  { id: 5,  kind: 'tile',        cat: 'alteration',  title: 'Cut & Bind Alteration',  tag: 'Alteration',  desc: 'Two 170×240 rugs cut to 150×200, joined into a seamless 200×300', pal: 'blue', aspect: '4/5' },
-  { id: 6,  kind: 'tile',        cat: 'onsite',      title: 'Onsite Cut-Outs',        tag: 'Onsite',      desc: 'Electric box, floor vent, pillar and box-flap cut-outs', pal: 'deep', aspect: '4/3' },
-  { id: 7,  kind: 'tile',        cat: 'restoration', title: 'Antique Heriz Restoration', tag: 'Restoration', desc: 'Field reweaving and selvedge rebuild · Mayfair residence', pal: 'warm', aspect: '3/4' },
-  { id: 8,  kind: 'tile',        cat: 'cleaning',    title: 'Persian Tabriz Wash',    tag: 'Cleaning',    desc: 'Six-day hand-immersion wash, dye-stable', pal: 'rose', aspect: '1/1' },
-  { id: 9,  kind: 'tile',        cat: 'installation',title: 'Boutique Hotel, Bath',   tag: 'Installation',desc: '32 suites, hand-bound runners, out-of-hours fit', pal: 'blue', aspect: '4/3' },
-  { id: 10, kind: 'tile',        cat: 'consultation',title: 'Designer Specification', tag: 'Consultation',desc: 'Bespoke colourway and weave specification for a Holland Park residence', pal: 'cream', aspect: '3/4' },
+  { id: 1,  kind: 'beforeafter', cat: 'restoration', title: 'Rug Burn Repair',        tag: 'Restoration', desc: 'Full pile restoration on a burn-damaged area — colour matched to original · London',                                                           imgB: 'assets/gallery/burn-repair-before.jpg',     imgA: 'assets/gallery/burn-repair-after.jpg',    aspect: '3/4' },
+  { id: 2,  kind: 'beforeafter', cat: 'onsite',      title: 'Column Cut-Out',          tag: 'Onsite',      desc: 'Rug required in the space but a column stood in the way — cut and hand-bound around the column to allow the rug to lie flush · London',          imgB: 'assets/gallery/column-cutout-before.jpg',   imgA: 'assets/gallery/column-cutout-after.jpg',  aspect: '4/3' },
+  { id: 3,  kind: 'sidebyside',  cat: 'alteration',  title: 'Cotswolds Rug Joining',   tag: 'Alteration',  desc: 'Client found the perfect rug but only in one size — two pieces joined seamlessly into a single large rug to suit the space · Cotswolds',        imgL: 'assets/gallery/cotswolds-before.jpg',       imgR: 'assets/gallery/cotswolds-after.jpg',      sbsAspect: '3/4', lightbox: true },
+  { id: 4,  kind: 'sidebyside',  cat: 'onsite',      title: 'Floorbox Cut-Out',        tag: 'Onsite',      desc: 'Office floor box needed to remain accessible — precise cut-out with hand-bound edges to prevent fraying · London',                             imgL: 'assets/gallery/floorbox-cutout-before.jpg', imgR: 'assets/gallery/floorbox-cutout-after.jpg',sbsAspect: '1/1' },
+  { id: 5,  kind: 'sidebyside',  cat: 'onsite',      title: 'Floorbox Access Flap',    tag: 'Onsite',      desc: 'A discreet operational flap cut and finished to cover and reveal the floorbox on demand · Manchester',                                         imgL: 'assets/gallery/floorbox-flap-closed.jpg',   imgR: 'assets/gallery/floorbox-flap-open.jpg',   sbsAspect: '1/1' },
+  { id: 6,  kind: 'sidebyside',  cat: 'alteration',  title: 'Mayfair Dining Room',     tag: 'Alteration',  desc: 'Rug sourced for a Mayfair dining room was too large for the space — cut down to the exact required dimensions and rebound · Mayfair',           imgL: 'assets/gallery/mayfair-before.webp',        imgR: 'assets/gallery/mayfair-after.jpg',        sbsAspect: '4/5', lightbox: true },
+  { id: 7,  kind: 'tile',        cat: 'alteration',  title: 'Rug Joining, Bath',       tag: 'Alteration',  desc: 'Rug too small for the room — two rugs joined as a foundation and cut to size to achieve the client\'s desired design · Bath',                  img: 'assets/gallery/rug-joining-1.jpg',           aspect: '1/1', lightbox: true },
+  { id: 8,  kind: 'multi',       cat: 'consultation',title: 'Table Cut-Out',           tag: 'Consultation',desc: 'Fixed table could not be moved — rug cut precisely around the base and fitted in place, edges hand-bound throughout · London',                  imgs: ['assets/gallery/table-cutout-before.png', 'assets/gallery/table-cutout-after.jpg', 'assets/gallery/table-cutout-design.jpg', 'assets/gallery/table-cutout-dimensions.png'], featured: 1 },
+  { id: 9,  kind: 'beforeafter', cat: 'onsite',      title: 'Floor Vent Cut-Out',      tag: 'Onsite',      desc: 'Floor vents overlooked at purchase stage — onsite alteration to cut around each vent, exposing airflow while keeping the rug intact · London', imgB: 'assets/gallery/vent-cutout-before.jpg',     imgA: 'assets/gallery/vent-cutout-after.jpg',    aspect: '4/3' },
 ];
 
 const CATS = [
@@ -551,11 +572,13 @@ const CATS = [
 
 function Gallery() {
   const [filter, setFilter] = useState('all');
+  const [lightbox, setLightbox] = useState(null); // { imgs: [], index: 0 }
   const visible = TILES.filter(t => filter === 'all' || t.cat === filter);
   const counts = Object.fromEntries(CATS.map(([k]) => [k, TILES.filter(t => k === 'all' || t.cat === k).length]));
 
   return (
     <main className="fade-in">
+      {lightbox && <Lightbox imgs={lightbox.imgs} startIndex={lightbox.index} onClose={() => setLightbox(null)} />}
       <section className="pagehead">
         <div className="shell">
           <div className="label">Portfolio · 2018–2026</div>
@@ -589,10 +612,27 @@ function Gallery() {
             {visible.map(t => (
               <figure key={t.id} className="tile">
                 {t.kind === 'beforeafter'
-                  ? <BeforeAfter imgBefore={t.imgB} imgAfter={t.imgA} palBefore={t.palB} palAfter={t.palA} label={t.desc} />
+                  ? <BeforeAfter imgBefore={t.imgB} imgAfter={t.imgA} palBefore={t.palB} palAfter={t.palA} label={t.desc} aspect={t.aspect || '4/3'} />
+                  : t.kind === 'sidebyside'
+                  ? (
+                    <div className={`sbs-grid${t.lightbox ? ' sbs-clickable' : ''}`} style={{'--sbs-aspect': t.sbsAspect || '4/3'}}>
+                      <img src={t.imgL} alt={t.title + ' left'}  onClick={t.lightbox ? () => setLightbox({ imgs: [t.imgL, t.imgR], index: 0 }) : undefined} />
+                      <img src={t.imgR} alt={t.title + ' right'} onClick={t.lightbox ? () => setLightbox({ imgs: [t.imgL, t.imgR], index: 1 }) : undefined} />
+                    </div>
+                  )
+                  : t.kind === 'multi'
+                  ? (
+                    <div className="multi-grid">
+                      {t.imgs.map((src, i) => <img key={i} src={src} alt={t.title + ' ' + (i+1)} className={t.featured === i ? 'featured' : ''} />)}
+                    </div>
+                  )
                   : (
-                    <div style={{aspectRatio: t.aspect, overflow: 'hidden'}}>
-                      <Placeholder palette={t.pal} style={{width:'100%',height:'100%'}} />
+                    <div style={{aspectRatio: t.aspect, overflow: 'hidden', cursor: t.lightbox ? 'zoom-in' : 'default'}}
+                         onClick={t.lightbox && t.img ? () => setLightbox({ imgs: [t.img], index: 0 }) : undefined}>
+                      {t.img
+                        ? <img src={t.img} alt={t.title} style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                        : <Placeholder palette={t.pal} style={{width:'100%',height:'100%'}} />
+                      }
                     </div>
                   )
                 }
