@@ -221,12 +221,12 @@ const CLIENTS = [
 ];
 
 const HOME_SERVICES = [
-  { n: '01', t: 'Rug Consultation & Design',       p: 'Expert guidance on rug type, construction and materials — every decision informed from the start.',           img: null,                          pal: 'warm' },
-  { n: '02', t: 'Alteration & Fabrication',        p: 'Rug joining, shape alteration and floor-box cut-outs, bespoke fits for any space.',                            img: 'assets/services/alteration.jpg', pal: 'rose' },
-  { n: '03', t: 'Project Planning & Installation', p: 'Flexible scheduling, collection, delivery and final-stage installation, all handled by our own team.',         img: null,                          pal: 'sage' },
-  { n: '04', t: 'Cleaning & Stain Removal',        p: 'Expert cleaning and stain removal, wool-safe and dye-stable.',                                                  img: null,                          pal: 'cream' },
-  { n: '05', t: 'Repair & Restoration',            p: 'Damage repairs, colour correction and pile resurfacing on antique and contemporary pieces.',                   img: 'assets/services/repair.jpg',  pal: 'blue' },
-  { n: '06', t: 'Aftercare & Maintenance',         p: 'In-depth care plans for the longevity of your rug, with optional scheduled checks.',                           img: null,                          pal: 'deep' },
+  { n: '01', t: 'Rug Consultation & Design',       p: 'Expert guidance on rug type, construction and materials — every decision informed from the start.',           img: 'assets/services/consultation.jpg', pal: 'warm' },
+  { n: '02', t: 'Alteration & Fabrication',        p: 'Rug joining, shape alteration and floor-box cut-outs, bespoke fits for any space.',                            img: 'assets/services/alteration.jpg',   pal: 'rose' },
+  { n: '03', t: 'Project Planning & Installation', p: 'Flexible scheduling, collection, delivery and final-stage installation, all handled by our own team.',         img: 'assets/services/installation.jpg', pal: 'sage' },
+  { n: '04', t: 'Cleaning & Stain Removal',        p: 'Expert cleaning and stain removal, wool-safe and dye-stable.',                                                  img: 'assets/services/cleaning.avif',    pal: 'cream' },
+  { n: '05', t: 'Repair & Restoration',            p: 'Damage repairs, colour correction and pile resurfacing on antique and contemporary pieces.',                   img: 'assets/services/repair.jpg',       pal: 'blue' },
+  { n: '06', t: 'Aftercare & Maintenance',         p: 'In-depth care plans for the longevity of your rug, with optional scheduled checks.',                           img: 'assets/services/aftercare.jpg',    pal: 'deep' },
 ];
 
 function Home({ setRoute }) {
@@ -396,7 +396,7 @@ const SERVICES = [
     sub: 'Establishing your needs and delivering expert guidance, from the start.',
     p: 'Carpets Clinic has set out to provide effective solutions when it comes to integrating a rug within a space. Our consultation establishes your needs and delivers expert guidance on rug type, construction and materials, so every decision is informed from the start. We work from concept boards through to final specification, alongside homeowners, designers and architects.',
     bullets: ['Site visits, sample reviews and design boards', 'Material, weave and pile recommendations', 'Bespoke colour matching and dye-lot management', 'Knot count and weave specification', 'Sourcing from our network of weavers in Central Asia'],
-    img: null, pal: 'warm', tag: 'Studio or on-site',
+    img: 'assets/services/consultation.jpg', pal: 'warm', tag: 'Studio or on-site',
   },
   {
     n: '02', t: 'Alteration & Fabrication',
@@ -410,14 +410,14 @@ const SERVICES = [
     sub: 'Scheduling, collection, delivery and installation, all by our own team.',
     p: 'We deliver flexible scheduling, fast turnarounds, collection, delivery and final-stage installation, all handled by our own team. For trade clients juggling multiple projects, we sit inside your timeline, not alongside it. Our on-site team carries the workshop with them, so any last-minute adjustment can be made in place.',
     bullets: ['Project-managed for designers and contractors', 'Insured collection and delivery, UK-wide', 'Photo updates at every milestone', 'On-site trimming for irregular rooms, doorways, fireplaces', 'Quiet out-of-hours and weekend installs'],
-    img: 'assets/services/installation.avif', pal: 'sage', tag: 'On-site · UK-wide',
+    img: 'assets/services/installation.jpg', pal: 'sage', tag: 'On-site · UK-wide',
   },
   {
     n: '04', t: 'Cleaning & Stain Removal',
     sub: 'Hand-immersion wash for the pieces machines can\'t touch.',
     p: 'We deliver expert cleaning and stain removal to improve the appearance of rugs and carpets. Our wash is fully manual: pH-balanced shampoos, soft brushes, cold-water rinse, flat-dried over six to twelve days. Wool-safe, dye-stable, returned to its natural lustre.',
     bullets: ['Specialist Persian, Tabriz, Heriz and Kashan rugs', 'Pet-stain and odour neutralisation', 'Moth treatment and insect-proofing', 'Silk-safe twelve-day cycle for delicate pieces', 'Free collection across UK mainland'],
-    img: null, pal: 'cream', tag: 'Studio · 6-12 days', flip: true,
+    img: 'assets/services/cleaning.avif', pal: 'cream', tag: 'Studio · 6-12 days', flip: true,
   },
   {
     n: '05', t: 'Repair & Restoration',
@@ -431,7 +431,7 @@ const SERVICES = [
     sub: 'In-depth care plans for the longevity of your rug.',
     p: 'Our team provides in-depth care plans for the longevity of the rug, with optional scheduled checks. We call back twelve months after installation to see how it\'s wearing, and arrange annual servicing for trade clients managing larger portfolios.',
     bullets: ['Annual servicing across portfolios', 'Twelve-month aftercare check post-installation', 'On-call advice for spills and accidents', 'Moth and pest monitoring contracts', 'Storage and handling guidance for clients'],
-    img: null, pal: 'deep', tag: 'Ongoing · By plan', flip: true,
+    img: 'assets/services/aftercare.jpg', pal: 'deep', tag: 'Ongoing · By plan', flip: true,
   },
 ];
 
