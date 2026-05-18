@@ -41,7 +41,7 @@ async function compress() {
     const srcStat = await stat(src);
     totalBefore += srcStat.size;
 
-    await sharp(src).webp({ quality: QUALITY }).toFile(dest);
+    await sharp(src).rotate().webp({ quality: QUALITY }).toFile(dest);
 
     const destStat = await stat(dest);
     totalAfter += destStat.size;
