@@ -490,6 +490,36 @@ a { color: inherit; text-decoration: none; }
 .footer-handle { margin-top: 12px; font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--bronze-tint); }
 .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bronze-tint); flex-wrap: wrap; gap: 12px; }
 
+/* ---------- FAQ ---------- */
+.faq-section { background: var(--linen); }
+.faq-list { margin-top: 48px; border-top: 1px solid var(--rule); }
+.faq-item { border-bottom: 1px solid var(--rule); }
+.faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 22px 0; background: none; border: none; cursor: pointer; text-align: left; font-family: var(--serif); font-size: clamp(17px, 1.5vw, 20px); font-weight: 500; color: var(--ink); transition: color 180ms ease; }
+.faq-q:hover { color: var(--bronze-deep); }
+.faq-icon { flex-shrink: 0; font-size: 22px; font-family: var(--mono); color: var(--bronze-deep); line-height: 1; }
+.faq-a { padding: 0 0 22px 0; }
+.faq-a p { font-size: 16px; line-height: 1.7; color: var(--charcoal-soft); max-width: 640px; }
+.inline-link { background: none; border: none; cursor: pointer; font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; color: var(--bronze-deep); text-decoration: underline; text-underline-offset: 3px; padding: 0; }
+.inline-link:hover { color: var(--ink); }
+
+/* ---------- Privacy Policy ---------- */
+.privacy-body { max-width: 720px; }
+.privacy-block { padding: 36px 0; border-bottom: 1px solid var(--rule); }
+.privacy-block:last-of-type { border-bottom: none; }
+.privacy-block h2 { font-family: var(--serif); font-size: clamp(18px, 1.6vw, 22px); font-weight: 500; color: var(--ink); margin-bottom: 16px; }
+.privacy-block p { font-size: 16px; line-height: 1.75; color: var(--charcoal-soft); margin-bottom: 12px; }
+.privacy-block p:last-child { margin-bottom: 0; }
+.privacy-block ul { list-style: none; padding: 0; margin: 12px 0; display: flex; flex-direction: column; gap: 8px; }
+.privacy-block ul li { padding-left: 20px; position: relative; font-size: 16px; line-height: 1.6; color: var(--charcoal-soft); }
+.privacy-block ul li::before { content: '–'; position: absolute; left: 0; color: var(--bronze-deep); }
+.privacy-block a { color: var(--bronze-deep); text-decoration: underline; text-underline-offset: 3px; }
+.privacy-block a:hover { color: var(--ink); }
+.privacy-cta { padding: 48px 0 0; }
+
+/* ---------- Footer legal link ---------- */
+.footer-legal-link { background: none; border: none; cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bronze-tint); padding: 0; transition: color 180ms ease; }
+.footer-legal-link:hover { color: var(--cream); }
+
 /* ---------- Utilities ---------- */
 .hide-mobile { display: initial; }
 @media (max-width: 720px) { .hide-mobile { display: none; } }
