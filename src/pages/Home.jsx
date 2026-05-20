@@ -30,7 +30,7 @@ const HOME_SERVICES = [
   { n: '03', t: 'Project Planning & Installation', p: 'Flexible scheduling, collection, delivery and final-stage installation, all handled by our own team.',         img: 'assets/services/installation.webp', pal: 'sage' },
   { n: '04', t: 'Cleaning & Stain Removal',        p: 'Expert cleaning and stain removal, wool-safe and dye-stable.',                                                  img: 'assets/services/cleaning.avif',     pal: 'cream' },
   { n: '05', t: 'Repair & Restoration',            p: 'Damage repairs, colour correction and pile resurfacing on antique and contemporary pieces.',                   img: 'assets/services/repair.webp',       pal: 'blue' },
-  { n: '06', t: 'Aftercare & Maintenance',         p: 'In-depth care plans for the longevity of your rug, with optional scheduled checks.',                           img: 'assets/services/aftercare.webp',    pal: 'deep' },
+  { n: '06', t: 'Aftercare & Maintenance',         p: 'In-depth care plans for the longevity of your rug, with optional scheduled checks.',                           img: 'assets/services/aftercare-2.webp',  pal: 'deep' },
 ];
 
 export default function Home({ setRoute }) {
