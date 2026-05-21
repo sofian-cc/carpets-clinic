@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const POSTS = [
   {
@@ -7,7 +7,9 @@ const POSTS = [
     excerpt: 'Persian rugs can outlast several generations if properly maintained — and be ruined in an afternoon if they\'re not. Here\'s what to do, and what to avoid.',
     category: 'Care & Maintenance',
     date: 'May 2026',
+    isoDate: '2026-05-01',
     read: '5 min read',
+    relatedService: { label: 'Rug Cleaning & Stain Removal', service: 'cleaning' },
     content: [
       { type: 'p', text: 'Persian rugs are among the most durable floor coverings ever made — a well-knotted Tabriz or Kashan can outlast several generations if properly maintained. But they are also among the easiest to damage through incorrect cleaning. Here is what to do, and what to avoid.' },
       { type: 'h2', text: 'Vacuuming — the right way' },
@@ -28,7 +30,9 @@ const POSTS = [
     excerpt: 'The most common mistake in interior design is a rug that\'s too small. Here\'s how to get the sizing right in every room.',
     category: 'Consultation & Design',
     date: 'April 2026',
+    isoDate: '2026-04-01',
     read: '6 min read',
+    relatedService: { label: 'Rug Consultation & Design', service: 'consultation' },
     content: [
       { type: 'p', text: 'One of the most common mistakes in interior design is buying a rug that is too small. A rug that floats in the centre of a room, too far from the furniture, makes the space feel disjointed — no matter how beautiful the piece itself is. Here is how to get it right, room by room.' },
       { type: 'h2', text: 'Living room' },
@@ -51,7 +55,9 @@ const POSTS = [
     excerpt: 'Moth damage is the single most common cause of rug deterioration in UK homes. By the time you notice it, the larvae have often been feeding for months.',
     category: 'Repair & Restoration',
     date: 'March 2026',
+    isoDate: '2026-03-01',
     read: '7 min read',
+    relatedService: { label: 'Rug Repair & Restoration', service: 'repair' },
     content: [
       { type: 'p', text: 'Moth damage is the single most common cause of rug deterioration in UK homes. It can destroy decades of value silently, because by the time you notice it, the larvae have often been feeding for months.' },
       { type: 'h2', text: 'Understanding the moth lifecycle' },
@@ -74,7 +80,9 @@ const POSTS = [
     excerpt: 'When a rug is damaged, the question is almost always the same: is it worth repairing? The answer depends on four factors.',
     category: 'Repair & Restoration',
     date: 'February 2026',
+    isoDate: '2026-02-01',
     read: '4 min read',
+    relatedService: { label: 'Rug Repair & Restoration', service: 'repair' },
     content: [
       { type: 'p', text: 'When a rug is damaged — whether from a burn, a spill, moth damage, or simply decades of use — the question is almost always the same: is it worth repairing? The answer depends on four factors: the value of the rug, the extent of the damage, the type of damage, and the cost of repair relative to replacement.' },
       { type: 'h2', text: 'What is the rug worth?' },
@@ -91,7 +99,7 @@ const POSTS = [
   },
 ];
 
-function BlogPost({ post, onBack }) {
+function BlogPost({ post, onBack, goService }) {
   return (
     <article className="blog-post fade-in">
       <div className="shell">
@@ -116,6 +124,14 @@ function BlogPost({ post, onBack }) {
             return null;
           })}
         </div>
+        {post.relatedService && (
+          <div className="post-related">
+            <span className="post-related-label">Related service</span>
+            <button className="post-related-link" onClick={() => goService('services')}>
+              {post.relatedService.label} <span>→</span>
+            </button>
+          </div>
+        )}
         <div className="post-footer">
           <p>Have a rug that needs attention?</p>
           <button className="btn btn-primary" onClick={onBack}>← Back to Journal</button>
@@ -129,10 +145,39 @@ export default function Blog({ setRoute }) {
   const [openPost, setOpenPost] = useState(null);
   const go = (r) => { setRoute(r); window.scrollTo({ top: 0, behavior: 'instant' }); };
 
+  // Inject Article schema + update page title when a post is open
+  useEffect(() => {
+    const existing = document.getElementById('article-schema');
+    if (existing) existing.remove();
+    if (openPost) {
+      document.title = `${openPost.title} | Carpets Clinic`;
+      const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: openPost.title,
+        description: openPost.excerpt,
+        datePublished: openPost.isoDate,
+        author: { '@type': 'Organization', name: 'Carpets Clinic', url: 'https://carpetsclinic.co.uk' },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Carpets Clinic',
+          logo: { '@type': 'ImageObject', url: 'https://carpetsclinic.co.uk/assets/logo.webp' },
+        },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://carpetsclinic.co.uk/#blog' },
+      };
+      const s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.id = 'article-schema';
+      s.textContent = JSON.stringify(schema);
+      document.head.appendChild(s);
+    }
+    return () => { document.getElementById('article-schema')?.remove(); };
+  }, [openPost]);
+
   if (openPost) {
     return (
       <main className="fade-in">
-        <BlogPost post={openPost} onBack={() => { setOpenPost(null); window.scrollTo({ top: 0, behavior: 'instant' }); }} />
+        <BlogPost post={openPost} onBack={() => { setOpenPost(null); window.scrollTo({ top: 0, behavior: 'instant' }); }} goService={go} />
         <section className="cta-banner-light">
           <div className="shell">
             <div className="cta-light-inner">

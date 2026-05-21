@@ -15,6 +15,18 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy.jsx'));
 
 const ROUTES = ['home', 'services', 'gallery', 'about', 'blog', 'contact', 'privacy'];
 
+const PAGE_META = {
+  home:     { title: 'Carpets Clinic — Specialist Rug Care, Restoration & Installation', description: 'A specialist rug studio where craft heritage meets engineering precision. Expert rug consultation, cleaning, repair, restoration and installation nationwide across the UK.' },
+  services: { title: 'Rug Cleaning, Repair, Restoration & Alteration Services | Carpets Clinic', description: 'Six specialist rug services: consultation & design, alteration, installation, cleaning, repair & restoration, and aftercare. Free quotes. UK-wide collection.' },
+  gallery:  { title: 'Rug Restoration & Alteration Portfolio | Carpets Clinic', description: 'Before & after gallery of rug restorations, alterations, cut-outs and installations by Carpets Clinic. UK-wide commissions since 2018.' },
+  about:    { title: 'About Carpets Clinic — Specialist Rug Studio, London NW10', description: 'Founded in 2018 by an engineer with Afghan-Uzbek heritage. Carpets Clinic combines Central Asian craft tradition with engineering precision.' },
+  blog:     { title: 'Rug Care Journal — Expert Guides on Cleaning, Repair & Design | Carpets Clinic', description: 'Practical guides on rug care, sizing, moth damage, repair and restoration — written by the Carpets Clinic team.' },
+  contact:  { title: 'Get a Free Rug Quote | Carpets Clinic London', description: 'Request a free written quote within 48 hours. Nationwide UK collection and delivery. Call +44 (0)20 8795 5215 or send us a message.' },
+  privacy:  { title: 'Privacy Policy | Carpets Clinic', description: 'How Carpets Clinic collects, uses and protects your personal information under UK GDPR.' },
+};
+
+const BREADCRUMB_LABELS = { services: 'Services', gallery: 'Gallery', about: 'About', blog: 'Journal', contact: 'Contact', privacy: 'Privacy Policy' };
+
 /* ================================================================
    NAV
    ================================================================ */
@@ -171,6 +183,32 @@ function App() {
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
+
+  useEffect(() => {
+    const meta = PAGE_META[route] || PAGE_META.home;
+    document.title = meta.title;
+    const descEl = document.querySelector('meta[name="description"]');
+    if (descEl) descEl.setAttribute('content', meta.description);
+
+    // Inject BreadcrumbList for non-home pages
+    const existing = document.getElementById('breadcrumb-schema');
+    if (existing) existing.remove();
+    if (route !== 'home') {
+      const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://carpetsclinic.co.uk/' },
+          { '@type': 'ListItem', position: 2, name: BREADCRUMB_LABELS[route] || route, item: `https://carpetsclinic.co.uk/#${route}` },
+        ],
+      };
+      const s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.id = 'breadcrumb-schema';
+      s.textContent = JSON.stringify(schema);
+      document.head.appendChild(s);
+    }
+  }, [route]);
 
   const pages = { home: Home, services: Services, gallery: Gallery, about: About, blog: Blog, contact: Contact, privacy: PrivacyPolicy };
   const Page = pages[route] || Home;
