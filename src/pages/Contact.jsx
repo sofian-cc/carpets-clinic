@@ -30,28 +30,29 @@ export default function Contact() {
     setError('');
     setSending(true);
     try {
-      const res = await fetch('/.netlify/functions/submit-form', {
+      const params = new URLSearchParams();
+      params.append('access_key', FORM_ACCESS_KEY);
+      params.append('subject', `New enquiry from ${form.name} — Carpets Clinic`);
+      params.append('name', form.name);
+      params.append('email', form.email);
+      params.append('phone', form.phone || 'Not provided');
+      params.append('postcode', form.postcode || 'Not provided');
+      params.append('services', form.services.join(', ') || 'Not specified');
+      params.append('message', form.message);
+
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          subject: `New enquiry from ${form.name} — Carpets Clinic`,
-          name: form.name,
-          email: form.email,
-          phone: form.phone || 'Not provided',
-          postcode: form.postcode || 'Not provided',
-          services: form.services.join(', ') || 'Not specified',
-          message: form.message,
-        }),
+        body: params,
       });
       const json = await res.json();
       if (json.success) {
         setSubmitted(true);
         window.scrollTo({ top: 200, behavior: 'smooth' });
       } else {
-        setError(json.message || 'Something went wrong. Please email us directly at info@carpetsclinic.co.uk');
+        setError(json.message || 'Something went wrong — please email info@carpetsclinic.co.uk directly.');
       }
-    } catch {
-      setError('Could not send — please email info@carpetsclinic.co.uk directly.');
+    } catch (err) {
+      setError(`Error: ${err.message} — please email info@carpetsclinic.co.uk directly.`);
     }
     setSending(false);
   };
