@@ -30,11 +30,10 @@ export default function Contact() {
     setError('');
     setSending(true);
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
+      const res = await fetch('/.netlify/functions/submit-form', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          access_key: FORM_ACCESS_KEY,
           subject: `New enquiry from ${form.name} — Carpets Clinic`,
           name: form.name,
           email: form.email,
