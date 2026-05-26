@@ -42,6 +42,7 @@ export default function Contact() {
 
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
+        credentials: 'omit',
         body: params,
       });
       const json = await res.json();
