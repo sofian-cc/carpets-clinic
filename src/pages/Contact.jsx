@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
-const FORM_ACCESS_KEY = '24b4e257-14b4-47e3-a55a-ff6b0dd4cbd8';
 
 const SERVICES_LIST = [
   'Rug Consultation & Design',
@@ -32,7 +30,7 @@ export default function Contact() {
     setSending(true);
     try {
       const data = new FormData();
-      data.append('access_key', FORM_ACCESS_KEY);
+      data.append('form-name', 'contact');
       data.append('name', form.name);
       data.append('email', form.email);
       data.append('phone', form.phone);
@@ -40,11 +38,7 @@ export default function Contact() {
       data.append('services', form.services.join(', ') || 'Not specified');
       data.append('message', form.message);
 
-      const res = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: data,
-      });
+      const res = await fetch('/', { method: 'POST', body: data });
 
       if (res.ok) {
         setSubmitted(true);
@@ -52,7 +46,7 @@ export default function Contact() {
       } else {
         setError('Something went wrong. Please email us directly at info@carpetsclinic.co.uk');
       }
-    } catch {
+    } catch (err) {
       setError('Could not send — please email info@carpetsclinic.co.uk directly.');
     }
     setSending(false);
