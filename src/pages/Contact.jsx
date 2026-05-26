@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
 const FORM_ACCESS_KEY = '24b4e257-14b4-47e3-a55a-ff6b0dd4cbd8';
+const CRM_WEBHOOK = 'https://rskebetcwpqydxmjfccu.supabase.co/functions/v1/contact-form';
 
 const SERVICES_LIST = [
   'Rug Consultation & Design',
@@ -29,40 +30,59 @@ export default function Contact() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSending(true);
 
-    if (!FORM_ENDPOINT) {
+    const payload = {
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      postcode: form.postcode,
+      services: form.services,
+      message: form.message,
+    };
+
+    // Fire both in parallel — either succeeding is enough
+    const [crmOk, emailOk] = await Promise.all([
+      // Primary: Supabase CRM webhook
+      fetch(CRM_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+        .then(r => r.ok)
+        .catch(() => false),
+
+      // Secondary: Web3Forms email notification
+      (async () => {
+        try {
+          const data = new FormData();
+          data.append('access_key', FORM_ACCESS_KEY);
+          data.append('name', form.name);
+          data.append('email', form.email);
+          data.append('phone', form.phone);
+          data.append('postcode', form.postcode);
+          data.append('services', form.services.join(', ') || 'Not specified');
+          data.append('message', form.message);
+          const r = await fetch(FORM_ENDPOINT, {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: data,
+          });
+          return r.ok;
+        } catch {
+          return false;
+        }
+      })(),
+    ]);
+
+    setSending(false);
+
+    if (crmOk || emailOk) {
       setSubmitted(true);
       window.scrollTo({ top: 200, behavior: 'smooth' });
-      return;
-    }
-
-    setSending(true);
-    try {
-      const data = new FormData();
-      data.append('access_key', FORM_ACCESS_KEY);
-      data.append('name', form.name);
-      data.append('email', form.email);
-      data.append('phone', form.phone);
-      data.append('postcode', form.postcode);
-      data.append('services', form.services.join(', ') || 'Not specified');
-      data.append('message', form.message);
-
-      const res = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: data,
-      });
-
-      if (res.ok) {
-        setSubmitted(true);
-        window.scrollTo({ top: 200, behavior: 'smooth' });
-      } else {
-        setError('Something went wrong. Please email us directly at info@carpetsclinic.co.uk');
-      }
-    } catch {
+    } else {
       setError('Could not send — please email info@carpetsclinic.co.uk directly.');
     }
-    setSending(false);
   };
 
   const reset = () => { setSubmitted(false); setForm({ name:'', email:'', phone:'', services:[], postcode:'', message:'' }); setError(''); };

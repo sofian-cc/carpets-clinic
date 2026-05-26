@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carpets Clinic — Specialist Rug Care, Restoration & Installation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Tokens ──────────────────────────────────────────────── */
+    :root {
+      --cream: #ffffff;
+      --off-white: #ffffff;
+      --paper: #fafafa;
+      --beige: #f5f5f5;
+      --warm-grey: #9b958a;
+      --charcoal: #1a1a1a;
+      --charcoal-soft: #2a2a2a;
+      --ink-60: #5e5e5e;
+      --ink-40: #8a8a8a;
+      --bronze: #9a7a3f;
+      --bronze-deep: #7a5e2c;
+      --bronze-tint: #d4b884;
+      --rule: #e6e6e6;
+      --rule-soft: #f0f0f0;
+
+      --serif: "Cormorant Garamond", "Times New Roman", serif;
+      --sans: "Manrope", -apple-system, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+
+      --max: 1280px;
+      --gutter: clamp(20px, 4vw, 56px);
+      --section-y: clamp(64px, 8vw, 120px);
+    }
+
+    /* ── Reset ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--charcoal);
+      background: var(--off-white);
+      -webkit-font-smoothing: antialiased;
+    }
+    h1,h2,h3,h4 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.005em; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Layout ──────────────────────────────────────────────── */
+    .shell {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding-left: var(--gutter);
+      padding-right: var(--gutter);
+    }
+    .section { padding-top: var(--section-y); padding-bottom: var(--section-y); }
+    .rule-hr { height: 1px; background: var(--rule); border: 0; }
+
+    /* ── Linen textures ──────────────────────────────────────── */
+    .linen {
+      background-color: #fafafb;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(20,30,50,0.012) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(90deg, rgba(20,30,50,0.012) 0 1px, transparent 1px 3px);
+    }
+    .linen-dark {
+      background-color: var(--charcoal);
+      background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 3px);
+      color: #f4f4f5;
+    }
+    .linen-dark h1,.linen-dark h2,.linen-dark h3 { color: #f4f4f5; }
+
+    /* ── Typography ──────────────────────────────────────────── */
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--bronze-deep);
+      font-weight: 500;
+    }
+    .eyebrow.light { color: var(--bronze-tint); }
+
+    .display {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(52px, 7.2vw, 104px);
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+    }
+    .display em { font-style: italic; color: var(--bronze-deep); }
+    .linen-dark .display em { color: var(--bronze-tint); }
+
+    .h-section {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -0.015em;
+    }
+    .h-section em { font-style: italic; color: var(--bronze-deep); }
+
+    .lede {
+      font-size: clamp(16px, 1.3vw, 19px);
+      line-height: 1.6;
+      color: var(--ink-60);
+      max-width: 54ch;
+    }
+
+    /* ── Buttons ─────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      font-family: var(--sans);
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 180ms, color 180ms, border-color 180ms, transform 180ms;
+      white-space: nowrap;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--charcoal); color: var(--cream); }
+    .btn-primary:hover { background: var(--bronze-deep); }
+    .btn-ghost { background: transparent; color: var(--charcoal); border-color: var(--rule); }
+    .btn-ghost:hover { border-color: var(--charcoal); }
+    .linen-dark .btn-ghost { color: #f4f4f5; border-color: rgba(212,184,132,0.35); }
+    .linen-dark .btn-ghost:hover { border-color: var(--bronze-tint); }
+    .btn .arrow { display: inline-block; transition: transform 180ms; }
+    .btn:hover .arrow { transform: translateX(3px); }
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.88);
+      border-bottom: 1px solid var(--rule-soft);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px; gap: 24px;
+    }
+    .logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      cursor: pointer; background: none; border: 0;
+    }
+    .logo-mark { width: 38px; height: 38px; }
+    .logo-mark svg { width: 100%; height: 100%; }
+    .logo-text { display: flex; flex-direction: column; line-height: 1; }
+    .logo-name {
+      font-family: var(--serif); font-size: 28px; font-weight: 400;
+      letter-spacing: -0.01em; color: var(--charcoal); line-height: 1;
+    }
+    .logo-sub {
+      font-family: var(--sans); font-size: 9px; letter-spacing: 0.26em;
+      text-transform: uppercase; color: var(--ink-40); margin-top: 4px;
+    }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--charcoal-soft);
+      padding: 8px 0; position: relative; transition: color 180ms;
+    }
+    .nav-links a::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+      height: 1px; background: var(--bronze);
+      transform: scaleX(0); transform-origin: left; transition: transform 220ms;
+    }
+    .nav-links a:hover { color: var(--charcoal); }
+    .nav-links a:hover::after,.nav-links a.active::after { transform: scaleX(1); }
+    .nav-cta { display: flex; align-items: center; gap: 16px; }
+    .nav-phone {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--ink-60);
+    }
+    .nav-phone .dot { color: var(--bronze); }
+
+    @media (max-width: 880px) {
+      .nav-links, .nav-phone, .nav-cta .btn { display: none; }
+    }
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero {
+      min-height: clamp(500px, 90vh, 960px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 0;
+    }
+    .hero-copy {
+      padding: clamp(48px, 8vw, 120px) var(--gutter);
+      padding-right: clamp(32px, 5vw, 72px);
+      max-width: 700px;
+      justify-self: end;
+      width: 100%;
+    }
+    .hero-copy .eyebrow { margin-bottom: 28px; }
+    .hero-copy .display { margin-bottom: 32px; }
+    .hero-copy .lede { margin-bottom: 40px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .hero-image {
+      height: 100%;
+      min-height: clamp(500px, 90vh, 960px);
+      background: var(--beige);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-image-inner {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #e8e0d4 0%, #d6cec4 50%, #c8bfb2 100%);
+    }
+    .hero-image-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px;
+    }
+    .hero-image-placeholder svg { opacity: 0.12; }
+    .hero-image-placeholder span {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(0,0,0,0.3);
+    }
+    /* Decorative rug pattern overlay */
+    .hero-pattern {
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, rgba(154,122,63,0.04) 0, rgba(154,122,63,0.04) 1px, transparent 0, transparent 50%),
+        repeating-linear-gradient(-45deg, rgba(154,122,63,0.04) 0, rgba(154,122,63,0.04) 1px, transparent 0, transparent 50%);
+      background-size: 24px 24px;
+    }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-copy { padding: 64px var(--gutter) 48px; max-width: 100%; justify-self: auto; }
+      .hero-image { min-height: 340px; height: 340px; }
+    }
+
+    /* ── Trust bar ───────────────────────────────────────────── */
+    .trustbar {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 20px 0;
+    }
+    .trustbar-inner {
+      display: flex; align-items: center; gap: 32px;
+      flex-wrap: wrap; justify-content: space-between;
+    }
+    .trustbar-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: var(--ink-60);
+    }
+    .trustbar-item .icon-circle {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--beige); border: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .trustbar-divider { width: 1px; height: 24px; background: var(--rule); }
+    @media (max-width: 640px) { .trustbar-divider { display: none; } }
+
+    /* ── Services section ────────────────────────────────────── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 56px;
+    }
+    .service-card {
+      background: var(--cream);
+      padding: 40px 36px;
+      transition: background 180ms;
+      cursor: pointer;
+    }
+    .service-card:hover { background: var(--beige); }
+    .service-number {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+      color: var(--bronze); margin-bottom: 20px;
+    }
+    .service-title {
+      font-family: var(--serif); font-size: clamp(22px, 2vw, 28px);
+      font-weight: 500; line-height: 1.1; margin-bottom: 14px;
+    }
+    .service-desc {
+      font-size: 14px; color: var(--ink-60); line-height: 1.6; margin-bottom: 24px;
+    }
+    .service-link {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--bronze-deep);
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: gap 180ms;
+    }
+    .service-card:hover .service-link { gap: 12px; }
+
+    @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 580px) { .services-grid { grid-template-columns: 1fr; } }
+
+    /* ── Section header ──────────────────────────────────────── */
+    .section-header { margin-bottom: 56px; }
+    .section-header .eyebrow { margin-bottom: 16px; }
+    .section-header .h-section { margin-bottom: 16px; }
+    .section-header-row {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; gap: 32px; flex-wrap: wrap;
+    }
+
+    /* ── Stats bar ───────────────────────────────────────────── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(212,184,132,0.2);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 64px;
+    }
+    .stat-item {
+      padding: 32px 28px;
+      border-right: 1px solid rgba(212,184,132,0.12);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: var(--serif); font-size: clamp(40px, 4vw, 60px);
+      font-weight: 400; color: var(--bronze-tint); line-height: 1;
+      letter-spacing: -0.02em; margin-bottom: 8px;
+    }
+    .stat-label { font-size: 13px; color: rgba(244,244,245,0.55); line-height: 1.4; }
+
+    @media (max-width: 760px) { .stats-bar { grid-template-columns: 1fr 1fr; } }
+
+    /* ── Process strip ───────────────────────────────────────── */
+    .process-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      margin-top: 56px;
+    }
+    .process-step { }
+    .process-num {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+      color: var(--bronze); margin-bottom: 14px;
+    }
+    .process-title {
+      font-family: var(--serif); font-size: 22px; font-weight: 500;
+      line-height: 1.1; margin-bottom: 10px;
+    }
+    .process-desc { font-size: 14px; color: var(--ink-60); line-height: 1.6; }
+    .process-line {
+      height: 2px; background: linear-gradient(90deg, var(--bronze) 0%, transparent 100%);
+      margin-bottom: 24px; border-radius: 1px;
+    }
+
+    @media (max-width: 760px) { .process-strip { grid-template-columns: 1fr 1fr; gap: 28px; } }
+    @media (max-width: 480px) { .process-strip { grid-template-columns: 1fr; } }
+
+    /* ── Gallery strip ───────────────────────────────────────── */
+    .gallery-strip {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 56px;
+      height: 400px;
+    }
+    .gallery-cell {
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      background: var(--beige);
+    }
+    .gallery-cell-inner {
+      position: absolute; inset: 0;
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .gallery-cell:nth-child(1) { background: linear-gradient(135deg, #ddd4c4, #c8bfb0); }
+    .gallery-cell:nth-child(2) { background: linear-gradient(135deg, #c8c0b4, #b8b0a4); }
+    .gallery-cell:nth-child(3) { background: linear-gradient(135deg, #d4ccbc, #beb6a8); }
+    .gallery-cell:nth-child(4) { background: linear-gradient(135deg, #ccc4b4, #c0b8a8); }
+    .gallery-caption {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(0,0,0,0.4);
+      background: rgba(255,255,255,0.6); padding: 5px 10px; border-radius: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .gallery-placeholder-icon {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-placeholder-icon svg { opacity: 0.1; }
+
+    @media (max-width: 760px) {
+      .gallery-strip { grid-template-columns: 1fr 1fr; height: auto; }
+      .gallery-cell { height: 180px; }
+    }
+
+    /* ── Testimonials ────────────────────────────────────────── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 56px;
+    }
+    .testimonial-card {
+      background: var(--cream);
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      padding: 32px 28px;
+    }
+    .testimonial-stars { color: var(--bronze); font-size: 15px; letter-spacing: 2px; margin-bottom: 16px; }
+    .testimonial-text {
+      font-family: var(--serif); font-size: 18px; font-weight: 400;
+      line-height: 1.5; color: var(--charcoal); margin-bottom: 24px;
+      font-style: italic;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .testimonial-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--beige); border: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 14px; color: var(--ink-40);
+    }
+    .testimonial-name { font-weight: 600; font-size: 13px; }
+    .testimonial-meta { font-size: 12px; color: var(--ink-40); }
+
+    @media (max-width: 860px) { .testimonials-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+    /* ── CTA banner ──────────────────────────────────────────── */
+    .cta-banner {
+      border-radius: 20px;
+      padding: clamp(48px, 6vw, 80px);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 40px; flex-wrap: wrap;
+    }
+    .cta-banner-text .eyebrow { margin-bottom: 16px; }
+    .cta-banner-text .h-section { margin-bottom: 12px; }
+    .cta-banner-text .lede { margin-bottom: 0; }
+    .cta-banner-actions { display: flex; gap: 12px; flex-wrap: wrap; flex-shrink: 0; }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .footer { border-top: 1px solid var(--rule); }
+    .footer-main {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding: 56px 0 48px;
+    }
+    .footer-brand .logo-name { font-size: 24px; margin-bottom: 16px; }
+    .footer-brand p { font-size: 14px; color: var(--ink-60); line-height: 1.6; max-width: 28ch; }
+    .footer-brand .nav-phone { margin-top: 20px; display: block; }
+    .footer-col h4 {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--ink-40);
+      margin-bottom: 16px; font-weight: 500;
+    }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { font-size: 14px; color: var(--charcoal-soft); transition: color 180ms; }
+    .footer-col a:hover { color: var(--bronze-deep); }
+    .footer-bottom {
+      border-top: 1px solid var(--rule); padding: 20px 0;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px; flex-wrap: wrap;
+      font-size: 12px; color: var(--ink-40);
+    }
+    .footer-legal { display: flex; gap: 24px; }
+    .footer-legal a { color: var(--ink-40); transition: color 180ms; }
+    .footer-legal a:hover { color: var(--charcoal); }
+
+    @media (max-width: 760px) {
+      .footer-main { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .footer-brand { grid-column: 1/-1; }
+    }
+    @media (max-width: 480px) { .footer-main { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ───────────────────────────────────────────────── -->
+<header class="nav">
+  <div class="shell">
+    <div class="nav-inner">
+      <a class="logo" href="#">
+        <div class="logo-mark">
+          <img src="Images/Carpets Clinic New Logos/logo_master_transparent.png" alt="Carpets Clinic mark" style="width:100%;height:100%;object-fit:contain;" />
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">Carpets Clinic</span>
+          <span class="logo-sub">London · Est. 2019</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#" class="active">Services</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-cta">
+        <span class="nav-phone"><span class="dot">·</span> +44 (0)20 8795 5215</span>
+        <a class="btn btn-primary" href="#">Get a quote <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- ── Hero ─────────────────────────────────────────────────────── -->
+<section class="hero linen">
+  <div class="hero-copy">
+    <div class="eyebrow">Specialist rug care · London NW10</div>
+    <h1 class="display">
+      Rugs restored.<br><em>Properly.</em>
+    </h1>
+    <p class="lede">
+      Hand-washing, reweaving, alteration and installation — for antique, Persian, and contemporary rugs. Collected from and returned to anywhere in the UK.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#">Get a free quote <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="#">View our work</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="hero-image-inner"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-image-placeholder">
+      <!-- Large rug icon placeholder -->
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+        <rect x="10" y="20" width="100" height="80" rx="4" stroke="#1a1a1a" stroke-width="3"/>
+        <rect x="18" y="28" width="84" height="64" rx="2" stroke="#1a1a1a" stroke-width="2"/>
+        <circle cx="60" cy="60" r="20" stroke="#1a1a1a" stroke-width="2"/>
+        <line x1="10" y1="20" x2="10" y2="100" stroke="#1a1a1a" stroke-width="2"/>
+        <line x1="110" y1="20" x2="110" y2="100" stroke="#1a1a1a" stroke-width="2"/>
+        <line x1="25" y1="8" x2="25" y2="20" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="40" y1="5" x2="40" y2="20" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="60" y1="5" x2="60" y2="20" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="80" y1="5" x2="80" y2="20" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="95" y1="8" x2="95" y2="20" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="25" y1="100" x2="25" y2="112" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="40" y1="100" x2="40" y2="115" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="60" y1="100" x2="60" y2="115" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="80" y1="100" x2="80" y2="115" stroke="#1a1a1a" stroke-width="1.5"/>
+        <line x1="95" y1="100" x2="95" y2="112" stroke="#1a1a1a" stroke-width="1.5"/>
+      </svg>
+      <span>Hero image</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── Trust bar ─────────────────────────────────────────────────── -->
+<div class="trustbar">
+  <div class="shell">
+    <div class="trustbar-inner">
+      <div class="trustbar-item">
+        <div class="icon-circle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a7a3f" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        5.0 · 200+ reviews
+      </div>
+      <div class="trustbar-divider"></div>
+      <div class="trustbar-item">
+        <div class="icon-circle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a7a3f" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        Quotes within 48 hours
+      </div>
+      <div class="trustbar-divider"></div>
+      <div class="trustbar-item">
+        <div class="icon-circle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a7a3f" stroke-width="2" stroke-linecap="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/></svg>
+        </div>
+        UK-wide collection &amp; delivery
+      </div>
+      <div class="trustbar-divider"></div>
+      <div class="trustbar-item">
+        <div class="icon-circle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a7a3f" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>
+        </div>
+        London studio, NW10
+      </div>
+      <div class="trustbar-divider"></div>
+      <div class="trustbar-item">
+        <div class="icon-circle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a7a3f" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        Fully insured
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Services ───────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="shell">
+    <div class="section-header-row">
+      <div>
+        <div class="eyebrow">What we do</div>
+        <h2 class="h-section" style="margin-top:16px">Every service<br><em>under one roof.</em></h2>
+      </div>
+      <p class="lede" style="max-width:38ch">From a single stain to a full restoration. We work on rugs of all origins, ages and conditions.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-number">01</div>
+        <h3 class="service-title">Cleaning &<br>Stain Removal</h3>
+        <p class="service-desc">Full hand-wash with pH-neutral solutions. Safe for wool, silk, cotton and all natural fibres. Stain pre-treatment included.</p>
+        <span class="service-link">Learn more →</span>
+      </div>
+      <div class="service-card">
+        <div class="service-number">02</div>
+        <h3 class="service-title">Repair &<br>Restoration</h3>
+        <p class="service-desc">Hand-reknotting, reweaving, fringe repair and moth damage treatment. Matched to original pile, colour and weave structure.</p>
+        <span class="service-link">Learn more →</span>
+      </div>
+      <div class="service-card">
+        <div class="service-number">03</div>
+        <h3 class="service-title">Alteration &<br>Resizing</h3>
+        <p class="service-desc">Cut-down, rebinding, joining and reshaping. If the right rug exists in the wrong size, we can fix it.</p>
+        <span class="service-link">Learn more →</span>
+      </div>
+      <div class="service-card">
+        <div class="service-number">04</div>
+        <h3 class="service-title">Fitting &<br>Installation</h3>
+        <p class="service-desc">Professional fitting with gripper, underlay and specialist adhesives. Including stair runners and bespoke shapes.</p>
+        <span class="service-link">Learn more →</span>
+      </div>
+      <div class="service-card">
+        <div class="service-number">05</div>
+        <h3 class="service-title">Consultation &<br>Design</h3>
+        <p class="service-desc">Sizing advice, sourcing guidance, and in-room placement consultations. For private clients and interior designers alike.</p>
+        <span class="service-link">Learn more →</span>
+      </div>
+      <div class="service-card">
+        <div class="service-number">06</div>
+        <h3 class="service-title">Aftercare<br>Plans</h3>
+        <p class="service-desc">Annual maintenance programmes with scheduled collection, inspection, cleaning and re-delivery. From £XX/year.</p>
+        <span class="service-link">Learn more →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── Dark stats section ─────────────────────────────────────────── -->
+<section class="section linen-dark">
+  <div class="shell">
+    <div class="section-header-row">
+      <div>
+        <div class="eyebrow light">The numbers</div>
+        <h2 class="h-section" style="margin-top:16px;color:#f4f4f5">Trusted by<br><em style="color:var(--bronze-tint)">homeowners and designers.</em></h2>
+      </div>
+      <p class="lede" style="color:rgba(244,244,245,0.55); max-width:36ch">Interior designers, property managers, private collectors and hotels — we work for all of them.</p>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-num">6,000+</div>
+        <div class="stat-label">Rugs cleaned,<br>restored or installed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Five-star<br>reviews</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">UK-wide</div>
+        <div class="stat-label">Collection &<br>delivery service</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">48 hrs</div>
+        <div class="stat-label">Typical quote<br>turnaround</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── How it works ───────────────────────────────────────────────── -->
+<section class="section linen">
+  <div class="shell">
+    <div class="eyebrow">The process</div>
+    <h2 class="h-section" style="margin-top:16px">Simple from<br><em>first contact.</em></h2>
+    <div class="process-strip">
+      <div class="process-step">
+        <div class="process-line"></div>
+        <div class="process-num">Step 01</div>
+        <h3 class="process-title">Send photos</h3>
+        <p class="process-desc">Email or WhatsApp a few photos of your rug and describe what you need. We'll assess it remotely first.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-line" style="background:linear-gradient(90deg,var(--bronze-deep),transparent)"></div>
+        <div class="process-num">Step 02</div>
+        <h3 class="process-title">Receive your quote</h3>
+        <p class="process-desc">We'll send a written, fixed-price quote within 48 hours. No hidden extras. No obligation to proceed.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-line" style="background:linear-gradient(90deg,#7a5e2c,transparent)"></div>
+        <div class="process-num">Step 03</div>
+        <h3 class="process-title">We collect</h3>
+        <p class="process-desc">We collect your rug at a time that suits you — anywhere in the UK. Fully insured during transit.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-line" style="background:linear-gradient(90deg,#5e4820,transparent)"></div>
+        <div class="process-num">Step 04</div>
+        <h3 class="process-title">Returned perfect</h3>
+        <p class="process-desc">Once the work is complete, we return it wrapped, with a care card and a report of what was done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── Gallery ────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="shell">
+    <div class="section-header-row">
+      <div>
+        <div class="eyebrow">Our work</div>
+        <h2 class="h-section" style="margin-top:16px">Before &amp;<br><em>after.</em></h2>
+      </div>
+      <a class="btn btn-ghost" href="#">View full gallery →</a>
+    </div>
+    <div class="gallery-strip">
+      <div class="gallery-cell">
+        <div class="gallery-placeholder-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="gallery-cell-inner">
+          <span class="gallery-caption">Tabriz restoration</span>
+        </div>
+      </div>
+      <div class="gallery-cell">
+        <div class="gallery-placeholder-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="gallery-cell-inner">
+          <span class="gallery-caption">Stain removal</span>
+        </div>
+      </div>
+      <div class="gallery-cell">
+        <div class="gallery-placeholder-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="gallery-cell-inner">
+          <span class="gallery-caption">Moth repair</span>
+        </div>
+      </div>
+      <div class="gallery-cell">
+        <div class="gallery-placeholder-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="gallery-cell-inner">
+          <span class="gallery-caption">Runner installation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── Testimonials ───────────────────────────────────────────────── -->
+<section class="section linen">
+  <div class="shell">
+    <div class="eyebrow">What clients say</div>
+    <h2 class="h-section" style="margin-top:16px">Trusted, <em>repeatedly.</em></h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"They restored an 80-year-old Afghan rug that I thought was beyond saving. The work was invisible and the price was fair."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">S</div>
+          <div>
+            <div class="testimonial-name">Sarah M.</div>
+            <div class="testimonial-meta">Notting Hill · Repair &amp; restoration</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Collected on Monday, returned on Friday — perfectly clean, beautifully wrapped. I've used them four times now."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">J</div>
+          <div>
+            <div class="testimonial-name">James T.</div>
+            <div class="testimonial-meta">Chelsea · Cleaning</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"As an interior designer I recommend Carpets Clinic to every client. Reliable, expert and they understand quality."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">L</div>
+          <div>
+            <div class="testimonial-name">Laura H.</div>
+            <div class="testimonial-meta">Interior designer · Trade account</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── CTA banner ─────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="shell">
+    <div class="cta-banner linen-dark" style="border-radius:20px">
+      <div class="cta-banner-text">
+        <div class="eyebrow light">Ready to start?</div>
+        <h2 class="h-section" style="margin-top:16px;font-size:clamp(28px,4vw,48px)">Have a rug that needs<br><em style="color:var(--bronze-tint)">attention? Let's talk.</em></h2>
+        <p class="lede" style="color:rgba(244,244,245,0.55);margin-top:12px">Free quotes, written within 48 hours. UK-wide collection and delivery.</p>
+      </div>
+      <div class="cta-banner-actions">
+        <a class="btn btn-primary" href="#" style="background:var(--bronze);border-color:var(--bronze)">Get a free quote <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="tel:+442087955215">+44 (0)20 8795 5215</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── Footer ─────────────────────────────────────────────────────── -->
+<footer class="footer linen">
+  <div class="shell">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom:16px;display:flex;align-items:center;gap:10px">
+          <div class="logo-mark" style="width:32px;height:32px">
+            <img src="Images/Carpets Clinic New Logos/logo_master_transparent.png" alt="Carpets Clinic mark" style="width:100%;height:100%;object-fit:contain;" />
+          </div>
+          <span class="logo-name" style="font-family:var(--serif);font-size:22px;font-weight:400;color:var(--charcoal)">Carpets Clinic</span>
+        </div>
+        <p>Specialist rug cleaning, repair, alteration and installation. London studio, UK-wide service.</p>
+        <span class="nav-phone" style="display:block;margin-top:20px;font-family:var(--mono);font-size:12px;letter-spacing:0.08em;color:var(--ink-60)">
+          <span style="color:var(--bronze)">·</span> +44 (0)20 8795 5215
+        </span>
+        <a href="mailto:info@carpetsclinic.co.uk" style="font-family:var(--mono);font-size:12px;letter-spacing:0.06em;color:var(--ink-60);margin-top:6px;display:block">info@carpetsclinic.co.uk</a>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Cleaning</a></li>
+          <li><a href="#">Repair &amp; Restoration</a></li>
+          <li><a href="#">Alteration</a></li>
+          <li><a href="#">Installation</a></li>
+          <li><a href="#">Consultation</a></li>
+          <li><a href="#">Aftercare Plans</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li><a href="#">Journal</a></li>
+          <li><a href="#">Trade accounts</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="#" style="color:var(--ink-60);pointer-events:none">Unit B2, 1 Chandos Road</a></li>
+          <li><a href="#" style="color:var(--ink-60);pointer-events:none">London NW10 6NF</a></li>
+          <li style="margin-top:12px"><a href="#">Get directions →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Carpets Clinic Limited. Co. No. 11931558 · VAT 384 8742 48</span>
+      <div class="footer-legal">
+        <a href="#">Privacy policy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
