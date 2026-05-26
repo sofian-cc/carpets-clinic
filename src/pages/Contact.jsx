@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+const FORM_ACCESS_KEY = '24b4e257-14b4-47e3-a55a-ff6b0dd4cbd8';
 
 const SERVICES_LIST = [
   'Rug Consultation & Design',
@@ -29,24 +30,28 @@ export default function Contact() {
     setError('');
     setSending(true);
     try {
-      const data = new FormData();
-      data.append('form-name', 'contact');
-      data.append('name', form.name);
-      data.append('email', form.email);
-      data.append('phone', form.phone);
-      data.append('postcode', form.postcode);
-      data.append('services', form.services.join(', ') || 'Not specified');
-      data.append('message', form.message);
-
-      const res = await fetch('/', { method: 'POST', body: data });
-
-      if (res.ok) {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: FORM_ACCESS_KEY,
+          subject: `New enquiry from ${form.name} — Carpets Clinic`,
+          name: form.name,
+          email: form.email,
+          phone: form.phone || 'Not provided',
+          postcode: form.postcode || 'Not provided',
+          services: form.services.join(', ') || 'Not specified',
+          message: form.message,
+        }),
+      });
+      const json = await res.json();
+      if (json.success) {
         setSubmitted(true);
         window.scrollTo({ top: 200, behavior: 'smooth' });
       } else {
-        setError('Something went wrong. Please email us directly at info@carpetsclinic.co.uk');
+        setError(json.message || 'Something went wrong. Please email us directly at info@carpetsclinic.co.uk');
       }
-    } catch (err) {
+    } catch {
       setError('Could not send — please email info@carpetsclinic.co.uk directly.');
     }
     setSending(false);
