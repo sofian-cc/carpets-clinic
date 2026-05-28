@@ -11,7 +11,7 @@ const POSTS = [
     read: '4 min read',
     relatedService: { label: 'Alteration & Fabrication', service: 'alteration' },
     content: [
-      { type: 'img', src: 'assets/gallery/cotswolds-before.webp', alt: 'Cotswolds rug before resizing — original 350 x 250cm piece', caption: 'Before: the original 350 x 250cm rug, too large for the reception room' },
+      { type: 'img', src: 'assets/gallery/mayfair-before.webp', alt: 'Cotswolds rug before resizing — original 350 x 250cm piece', caption: 'Before: the original 350 x 250cm rug, too large for the reception room' },
       { type: 'p', text: 'Interior designers regularly encounter the same problem: the right rug exists, but not in the right size. Retailers stock standard dimensions. Rooms do not come in standard dimensions. This project, completed for a country home in the Cotswolds, is a good example of how a precise alteration resolves the gap between the two.' },
       { type: 'h2', text: 'The brief' },
       { type: 'p', text: 'The client had sourced a rug they loved. At 350 x 250cm, it was too large for the reception room it was intended for. The desired size was 250 x 200cm. Simply buying a smaller version was not an option: the pattern and quality of this particular piece was exactly what the space needed.' },
@@ -20,7 +20,7 @@ const POSTS = [
       { type: 'p', text: 'The rug was collected from the property and brought to our London studio. We made the cuts using specialist tools, then applied new binding along both cut edges, matched in colour and material to the original selvedge finish. The result is indistinguishable from a rug made to that size.' },
       { type: 'h2', text: 'On-site installation' },
       { type: 'p', text: 'Once the alteration was complete, we returned to the Cotswolds for installation. This is a step we include as standard on alteration projects where the rug needs to sit precisely within the room. Getting the placement right in context, with the furniture in situ, matters.' },
-      { type: 'img', src: 'assets/gallery/cotswolds-after.webp', alt: 'Cotswolds rug after resizing — installed in the reception room', caption: 'After: the resized rug installed in the Cotswolds reception room' },
+      { type: 'img', src: 'assets/gallery/mayfair-after.webp', alt: 'Cotswolds rug after resizing — installed in the reception room', caption: 'After: the resized rug installed in the Cotswolds reception room' },
       { type: 'h2', text: 'What interior designers should know' },
       { type: 'ul', items: [
         'Most rugs can be resized without visible impact on the design, depending on pattern placement',
@@ -111,7 +111,7 @@ const POSTS = [
     read: '4 min read',
     relatedService: { label: 'Alteration & Fabrication', service: 'alteration' },
     content: [
-      { type: 'img', src: 'assets/gallery/mayfair-before.webp', alt: 'Two standard rugs before cutting and joining', caption: 'Before: two 170 x 240cm rugs sourced from the same batch' },
+      { type: 'img', src: 'assets/gallery/cotswolds-before.webp', alt: 'Two standard rugs before cutting and joining', caption: 'Before: two 170 x 240cm rugs sourced from the same batch' },
       { type: 'p', text: 'Standard rug sizes are dictated by production runs, not by the dimensions of the rooms they are going into. When a client needs a specific size that simply does not exist in the range, the options are a custom commission with a long lead time, or a specialist alteration. This project shows what the alteration route looks like in practice.' },
       { type: 'h2', text: 'The brief' },
       { type: 'p', text: 'The client needed a rug at 200 x 300cm. The retailer stocked the design in 170 x 240cm only. Two pieces were purchased. The brief was to cut both down to 150 x 200cm each and join them to produce a finished rug of 200 x 300cm, preserving the proportions and visual balance of the original design.' },
@@ -119,7 +119,7 @@ const POSTS = [
       { type: 'p', text: 'Cutting a rug reduces its dimensions. Joining adds them back together in a different configuration. By cutting two pieces and joining on the long edge, the result is a rug with the proportions of a size that was never available in the original range. The design, pile and finish are all continuous across the join.' },
       { type: 'h2', text: 'The execution' },
       { type: 'p', text: 'Both rugs were assessed for consistency of pile direction, dye lot and pattern before any cutting began. The cuts were made to precise measurements on all four sides of each piece. The two cut pieces were then joined along the centre seam with pattern alignment confirmed before the join was fixed. The outer edges were rebound to complete the piece.' },
-      { type: 'img', src: 'assets/gallery/mayfair-after.webp', alt: 'Completed 200 x 300cm rug in bedroom after cut, join and bind', caption: 'After: a seamless 200 x 300cm rug, a size the retailer did not stock' },
+      { type: 'img', src: 'assets/gallery/cotswolds-after.webp', alt: 'Completed 200 x 300cm rug in bedroom after cut, join and bind', caption: 'After: a seamless 200 x 300cm rug, a size the retailer did not stock' },
       { type: 'h2', text: 'When to use this approach' },
       { type: 'ul', items: [
         'When the required size sits between two standard sizes in a range',
