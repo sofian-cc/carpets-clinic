@@ -108,6 +108,7 @@ function BlogPost({ post, onBack, goService }) {
           <div className="post-meta-top">
             <span className="post-cat">{post.category}</span>
             <span className="post-date">{post.date} · {post.read}</span>
+            <span className="post-author">By Sofian Mohammed</span>
           </div>
           <h1 className="post-title">{post.title}</h1>
           <p className="post-excerpt">{post.excerpt}</p>
@@ -157,7 +158,7 @@ export default function Blog({ setRoute }) {
         headline: openPost.title,
         description: openPost.excerpt,
         datePublished: openPost.isoDate,
-        author: { '@type': 'Organization', name: 'Carpets Clinic', url: 'https://carpetsclinic.co.uk' },
+        author: { '@type': 'Person', name: 'Sofian Mohammed', url: 'https://carpetsclinic.co.uk' },
         publisher: {
           '@type': 'Organization',
           name: 'Carpets Clinic',
@@ -214,6 +215,7 @@ export default function Blog({ setRoute }) {
                 <div className="blog-card-meta">
                   <span className="post-cat">{post.category}</span>
                   <span className="post-date">{post.date} · {post.read}</span>
+                  <span className="post-author">By Sofian Mohammed</span>
                 </div>
                 <h2 className="blog-card-title">{post.title}</h2>
                 <p className="blog-card-excerpt">{post.excerpt}</p>
