@@ -291,7 +291,7 @@ export default function Blog({ setRoute }) {
         publisher: {
           '@type': 'Organization',
           name: 'Carpets Clinic',
-          logo: { '@type': 'ImageObject', url: 'https://carpetsclinic.co.uk/assets/logo.webp' },
+          logo: { '@type': 'ImageObject', url: 'https://carpetsclinic.co.uk/assets/logo.png' },
         },
         mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://carpetsclinic.co.uk/#blog' },
       };
