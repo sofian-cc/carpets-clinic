@@ -56,7 +56,7 @@ function Nav({ route, setRoute }) {
     <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
       <div className="shell nav-inner">
         <button className="logo" onClick={() => go('home')} aria-label="Carpets Clinic home">
-          <span className="logo-mark"><img src="assets/logo.png" alt="Carpets Clinic" /></span>
+          <span className="logo-mark"><img src="assets/logo.webp" alt="Carpets Clinic" /></span>
           <span className="logo-text">
             <span className="name">Carpets Clinic</span>
             <span className="sub">Specialist Rug Care · UK</span>
