@@ -35,6 +35,7 @@ export default function Contact() {
       params.append('subject', `New enquiry from ${form.name} — Carpets Clinic`);
       params.append('name', form.name);
       params.append('email', form.email);
+      params.append('replyto', form.email);
       params.append('phone', form.phone || 'Not provided');
       params.append('postcode', form.postcode || 'Not provided');
       params.append('services', form.services.join(', ') || 'Not specified');
